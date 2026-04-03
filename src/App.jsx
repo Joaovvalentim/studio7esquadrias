@@ -49,23 +49,28 @@ const authorityCards = [
 const differentiators = [
   {
     number: '01',
+    icon: 'architecture',
     title: 'Estética alinhada à arquitetura',
-    text: 'Perfis, modulações e composições que favorecem fachadas mais limpas e ambientes mais elegantes.',
+    text: 'Perfis, modulações e composições desenvolvidos para criar fachadas mais limpas, elegantes e coerentes com o conceito arquitetônico.',
   },
   {
     number: '02',
-    title: 'Precisão e desempenho',
-    text: 'Leitura técnica para unir visual, funcionamento consistente e sensação de qualidade percebida.',
+    icon: 'precision',
+    title: 'Precisão técnica e desempenho',
+    text: 'Soluções projetadas para garantir leitura visual superior, funcionamento consistente, vedação eficiente e qualidade percebida em cada detalhe.',
   },
   {
     number: '03',
-    title: 'Personalização do projeto',
-    text: 'Cada demanda pode ser direcionada conforme tipologia, abertura, proporção e uso da obra.',
+    icon: 'customization',
+    title: 'Personalização sob medida',
+    text: 'Cada projeto é direcionado conforme tipologia, abertura, proporção, contexto estético e necessidade real de uso da obra.',
   },
   {
     number: '04',
+    icon: 'corporate',
     title: 'Valor para clientes corporativos',
-    text: 'Apresentação comercial mais sólida para empresas que precisam transmitir confiança e alto padrão.',
+    text: 'Uma apresentação técnica e comercial mais sólida para construtoras, incorporadoras e empresas que precisam transmitir confiança e alto padrão.',
+    featured: true,
   },
 ]
 
@@ -91,12 +96,26 @@ const projectShowcase = [
 ]
 
 const whyChoose = [
-  'Percepção de marca mais premium para apresentar o negócio.',
-  'Argumentação comercial mais clara para empresas e especificadores.',
-  'Foco em imagens de arquitetura e aplicações reais.',
-  'Layout pensado para escaneabilidade e conversão via WhatsApp.',
-  'Design sofisticado sem perder objetividade comercial.',
-  'Estrutura preparada para troca simples de imagens, textos e links.',
+  {
+    number: '01',
+    title: 'Valorização do projeto',
+    text: 'Seu empreendimento ganha percepção de alto padrão desde a apresentação até a execução.',
+  },
+  {
+    number: '02',
+    title: 'Segurança técnica',
+    text: 'Soluções pensadas para vedação eficiente, durabilidade e funcionamento consistente.',
+  },
+  {
+    number: '03',
+    title: 'Clareza comercial',
+    text: 'Facilitamos a decisão de clientes, investidores e especificadores.',
+  },
+  {
+    number: '04',
+    title: 'Execução confiável',
+    text: 'Do conceito à entrega, cada etapa é planejada para funcionar com precisão.',
+  },
 ]
 
 const processSteps = [
@@ -104,16 +123,22 @@ const processSteps = [
     step: '01',
     title: 'Entendimento da demanda',
     text: 'Recebemos o contexto da obra, perfil do projeto e necessidade comercial para direcionar a solução.',
+    image:
+      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80',
   },
   {
     step: '02',
     title: 'Leitura técnica e proposta',
     text: 'Organizamos as informações com foco em tipologia, estética, abertura, desempenho e apresentação.',
+    image:
+      'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80',
   },
   {
     step: '03',
     title: 'Atendimento e continuidade',
     text: 'O contato avança com mais clareza, confiança e alinhamento entre expectativa e proposta.',
+    image:
+      'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=80',
   },
 ]
 
@@ -188,6 +213,7 @@ function App() {
   const [activeHeroSlide, setActiveHeroSlide] = useState(0)
   const [previousHeroSlide, setPreviousHeroSlide] = useState(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [openFaqIndex, setOpenFaqIndex] = useState(0)
 
   useEffect(() => {
     const items = document.querySelectorAll('[data-reveal]')
@@ -374,9 +400,7 @@ function App() {
               <p className="eyebrow" data-reveal="up">
                 Studio 7 Esquadrias . Campinas/SP
               </p>
-              <h1 data-reveal="up">
-                Esquadrias de alumínio para projetos de alto padrão.
-              </h1>
+              <h1 data-reveal="up">Esquadrias de alumínio para projetos de alto padrão.</h1>
               <p className="hero-text" data-reveal="up">
                 Soluções para fachadas, grandes aberturas e ambientes integrados, com acabamento
                 premium, desempenho técnico e integração arquitetônica.
@@ -487,19 +511,53 @@ function App() {
           </section>
 
           <section className="section-panel differentiators-section" data-section id="diferenciais">
-            <div className="section-head section-head-clear" data-reveal="up">
-              <p className="eyebrow">Diferenciais</p>
-              <h2>Design, engenharia e apresentação comercial no mesmo nível de exigência.</h2>
-            </div>
+            <div className="differentiators-layout">
+              <div className="section-head section-head-clear differentiators-head" data-reveal="left">
+                <p className="eyebrow">Diferenciais</p>
+                <h2>
+                  Esquadrias que unem
+                  <br />
+                  design sofisticado, precisão técnica
+                  <br />
+                  e valorização do projeto
+                </h2>
+                <p>
+                  Desenvolvemos soluções sob medida que combinam estética, desempenho e apresentação
+                  comercial para projetos de alto padrão.
+                </p>
 
-            <div className="differentiators-grid">
-              {differentiators.map((item) => (
-                <article className="differential-card" data-reveal="up" key={item.title}>
-                  <span className="card-kicker">{item.number}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </article>
-              ))}
+                <div className="differentiators-actions">
+                  <a className="primary-cta differentiators-primary" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+                    Solicitar orçamento
+                  </a>
+                  <a className="secondary-cta differentiators-secondary" href="#contato">
+                    Falar com especialista
+                  </a>
+                </div>
+
+                <p className="differentiators-proof">
+                  +150 projetos entregues para clientes de alto padrão em todo o Brasil
+                </p>
+              </div>
+
+              <div className="differentiators-composition">
+                {differentiators.map((item, index) => (
+                  <article
+                    className={`differential-card differential-card-${item.number} ${item.featured ? 'differential-card-featured' : ''}`}
+                    data-reveal={index === 0 ? 'right' : 'up'}
+                    key={item.title}
+                  >
+                    <span className={`differential-icon differential-icon-${item.icon}`} aria-hidden="true">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </span>
+                    <span className="card-kicker">{item.number}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </article>
+                ))}
+              </div>
             </div>
           </section>
 
@@ -530,100 +588,139 @@ function App() {
           <section className="section-panel reasons-section">
             <div className="reasons-copy section-head-clear" data-reveal="left">
               <p className="eyebrow">Por que escolher</p>
-              <h2>Uma estrutura pensada para escaneabilidade, impacto visual e ação comercial.</h2>
+              <h2>Decisões técnicas, estéticas e comerciais no mesmo nível de exigência</h2>
               <p>
-                Cada bloco ajuda o visitante a entender rapidamente o posicionamento da marca, o
-                tipo de obra atendida e o próximo passo para iniciar uma conversa.
+                Cada projeto é desenvolvido para valorizar o empreendimento, garantir desempenho
+                técnico e facilitar a tomada de decisão de quem está investindo.
               </p>
             </div>
 
             <div className="reasons-list" data-reveal="right">
               {whyChoose.map((item) => (
-                <article className="reason-item" key={item}>
-                  <span className="reason-bullet"></span>
-                  <p>{item}</p>
-                </article>
+                <div className="reason-list-item" key={item.title}>
+                  <span className="reason-list-number">{item.number}</span>
+                  <div className="reason-list-content">
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </div>
+                </div>
               ))}
             </div>
           </section>
 
           <section className="section-panel process-section" data-section id="processo">
-            <div className="section-head section-head-clear process-head" data-reveal="up">
-              <p className="eyebrow">Processo</p>
-              <h2>Um caminho simples, elegante e claro até o contato comercial.</h2>
-            </div>
+            <div className="process-layout">
+              <div className="section-head section-head-clear process-head" data-reveal="left">
+                <p className="eyebrow">Processo</p>
+                <h2>Um caminho simples, elegante e claro até o contato comercial.</h2>
+              </div>
 
-            <div className="process-grid">
-              {processSteps.map((item) => (
-                <article className="process-card" data-reveal="up" key={item.step}>
-                  <span className="process-number">{item.step}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </article>
-              ))}
+              <div className="process-flow">
+                {processSteps.map((item, index) => (
+                  <article className="process-step" data-reveal={index === 0 ? 'right' : 'up'} key={item.step}>
+                    <span className="process-step-number">{item.step}</span>
+                    <div className="process-step-content">
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                    </div>
+                    <div className="process-step-image-wrap" aria-hidden="true">
+                      <img className="process-step-image" src={item.image} alt="" />
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
           </section>
 
           <section className="section-panel testimonials-section">
-            <div className="section-head section-head-clear" data-reveal="up">
-              <p className="eyebrow">Prova social</p>
-              <h2>Espaço para reforçar confiança com depoimentos reais de clientes e parceiros.</h2>
-              <p>
-                Para manter credibilidade, os textos abaixo estão preparados como placeholders bem
-                identificados e podem ser substituídos pelos depoimentos oficiais da empresa.
-              </p>
-            </div>
+            <div className="testimonials-layout">
+              <div className="section-head section-head-clear testimonials-head" data-reveal="left">
+                <p className="eyebrow">Prova social</p>
+                <h2>Confiança construída em cada projeto</h2>
+                <p>
+                  Depoimentos que reforçam a clareza comercial, o cuidado técnico e a percepção de
+                  alto padrão em cada etapa da experiência.
+                </p>
+              </div>
 
-            <div className="testimonials-grid">
-              {testimonials.map((item) => (
-                <article className="testimonial-card" data-reveal="up" key={item.name + item.role}>
-                  <div className="testimonial-head">
-                    <img className="testimonial-avatar" src={item.image} alt={item.name} />
-                    <div className="testimonial-meta">
-                      <strong>{item.name}</strong>
-                      <span>{item.role}</span>
+              <div className="testimonials-list">
+                {testimonials.map((item, index) => (
+                  <article className="testimonial-item" data-reveal={index === 0 ? 'right' : 'up'} key={item.name + item.role}>
+                    <div className="testimonial-stars" aria-label={`${item.stars} de 5 estrelas`}>
+                      {'★'.repeat(item.stars)}
                     </div>
-                  </div>
-                  <div className="testimonial-stars" aria-label={`${item.stars} de 5 estrelas`}>
-                    {'★'.repeat(item.stars)}
-                  </div>
-                  <p className="testimonial-quote">{item.quote}</p>
-                </article>
-              ))}
+                    <p className="testimonial-quote">“{item.quote}”</p>
+                    <div className="testimonial-author">
+                      <img className="testimonial-avatar" src={item.image} alt={item.name} />
+                      <div className="testimonial-meta">
+                        <strong>{item.name}</strong>
+                        <span>{item.role}</span>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
           </section>
 
           <section className="section-panel faq-section" data-section id="faq">
-            <div className="section-head section-head-clear" data-reveal="up">
-              <p className="eyebrow">FAQ</p>
-              <h2>Dúvidas comuns antes de solicitar atendimento.</h2>
-            </div>
+            <div className="faq-layout">
+              <div className="section-head section-head-clear faq-head" data-reveal="left">
+                <p className="eyebrow">FAQ</p>
+                <h2>Dúvidas comuns antes de solicitar atendimento.</h2>
+                <p>
+                  Respostas rápidas para facilitar a leitura, reduzir objeções e conduzir o contato
+                  comercial com mais clareza.
+                </p>
+              </div>
 
-            <div className="faq-list" data-reveal="up">
-              {faqItems.map((item) => (
-                <details className="faq-item" key={item.question}>
-                  <summary>{item.question}</summary>
-                  <p>{item.answer}</p>
-                </details>
-              ))}
+              <div className="faq-content" data-reveal="right">
+                <div className="faq-list">
+                  {faqItems.map((item, index) => {
+                    const isOpen = openFaqIndex === index
+
+                    return (
+                      <article className={`faq-item ${isOpen ? 'is-open' : ''}`} key={item.question}>
+                        <button
+                          className="faq-trigger"
+                          onClick={() => setOpenFaqIndex(isOpen ? -1 : index)}
+                          type="button"
+                        >
+                          <span className="faq-question">{item.question}</span>
+                          <span className="faq-icon" aria-hidden="true"></span>
+                        </button>
+                        <div className={`faq-answer-wrap ${isOpen ? 'is-open' : ''}`}>
+                          <p className="faq-answer">{item.answer}</p>
+                        </div>
+                      </article>
+                    )
+                  })}
+                </div>
+
+                <div className="faq-cta">
+                  <p>Não encontrou sua dúvida?</p>
+                  <a className="primary-cta faq-cta-button" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+                    Falar no WhatsApp
+                  </a>
+                </div>
+              </div>
             </div>
           </section>
 
           <section className="section-panel final-cta" data-section id="contato">
             <div className="final-cta-copy section-head-clear" data-reveal="left">
               <p className="eyebrow">Contato</p>
-              <h2>Se a sua empresa quer transmitir mais valor, o próximo passo é abrir a conversa.</h2>
+              <h2>Se o projeto precisa transmitir mais valor, o próximo passo é iniciar a conversa</h2>
               <p>
-                Uma landing premium só faz sentido quando conduz o visitante para uma ação clara.
-                Aqui, o caminho principal é o WhatsApp, com abordagem direta e comercialmente
-                objetiva.
+                Atendimento direto para entender o contexto, alinhar a abordagem comercial e
+                encaminhar a solução mais adequada para o projeto.
               </p>
             </div>
 
             <div className="final-cta-panel" data-reveal="right">
-              <span>Canal principal de conversão</span>
+              <span>Canal principal de contato</span>
               <strong>Falar no WhatsApp</strong>
-              <p>Atendimento direto para alinhamento comercial, apresentação e solicitação de orçamento.</p>
+              <p>Atendimento direto para alinhamento comercial, entendimento do projeto e solicitação de orçamento.</p>
               <a className="primary-cta final-cta-button" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
                 Solicitar orçamento
               </a>
@@ -638,7 +735,7 @@ function App() {
             <img className="brand-logo" src={logo} alt="Studio 7 Esquadrias" />
             <div>
               <strong>Studio 7 Esquadrias</strong>
-              <p>Esquadrias de alumínio . Campinas/SP . Atendimento comercial via WhatsApp</p>
+              <p>Esquadrias premium para projetos residenciais, corporativos e arquitetônicos.</p>
             </div>
           </div>
 
