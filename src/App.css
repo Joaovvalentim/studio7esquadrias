@@ -299,6 +299,8 @@ section {
   scroll-margin-top: 5.8rem;
 }
 
+.about-section,
+.sponsored-section,
 .intro-band,
 .delivery-section,
 .process-section,
@@ -324,6 +326,8 @@ section {
   padding: 42px 0 54px;
 }
 
+.about-section h2,
+.sponsored-panel h2,
 .intro-band h2,
 .process-section h2,
 .projects-section h2,
@@ -334,6 +338,42 @@ section {
 .delivery-section h2 {
   max-width: 900px;
   font-size: 4.2rem;
+}
+
+.text-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.text-stack p,
+.sponsored-panel p,
+.main-benefits,
+.partners-list,
+.line-list li {
+  color: rgba(220, 233, 247, 0.72);
+}
+
+.text-stack p,
+.sponsored-panel p {
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.sponsored-panel {
+  padding: 54px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(18, 35, 59, 0.72), rgba(11, 24, 42, 0.86));
+  border: 1px solid rgba(122, 174, 230, 0.13);
+}
+
+.sponsored-panel h2 {
+  max-width: 1000px;
+  font-size: clamp(2.1rem, 4vw, 3.85rem);
+}
+
+.sponsored-panel p {
+  max-width: 760px;
+  margin-top: 22px;
 }
 
 .differentials-grid {
@@ -383,14 +423,15 @@ section {
 }
 
 .image-card h3 {
-  max-width: 13ch;
-  font-size: 1.7rem;
+  max-width: 18ch;
+  font-size: clamp(1.28rem, 1.9vw, 1.62rem);
+  line-height: 1.08;
 }
 
 .image-card ul {
   display: grid;
-  gap: 6px;
-  margin: 16px 0 0;
+  gap: 5px;
+  margin: 14px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -668,24 +709,44 @@ section {
 
 .process-section h2 {
   max-width: 760px;
-  font-size: clamp(2.45rem, 4.2vw, 3.1rem);
+  font-size: clamp(2.35rem, 4vw, 2.95rem);
   line-height: 0.96;
+  opacity: 0;
+  transform: translateY(12px);
 }
 
 .process-section .section-kicker {
   margin-bottom: 8px;
   font-size: 0.68rem;
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .process-section .section-lead {
   max-width: 680px;
-  margin-top: 10px;
-  font-size: 0.96rem;
+  margin-top: 8px;
+  font-size: 0.92rem;
   line-height: 1.35;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.process-section.is-visible .section-kicker {
+  animation: processIntroFade 560ms ease-out forwards;
+}
+
+.process-section.is-visible h2 {
+  animation: processIntroFade 620ms ease-out forwards;
+  animation-delay: 80ms;
+}
+
+.process-section.is-visible .section-lead {
+  animation: processIntroFade 620ms ease-out forwards;
+  animation-delay: 160ms;
 }
 
 .process-section .center-action {
-  margin-top: clamp(14px, 2.4vh, 20px);
+  margin-top: clamp(12px, 2vh, 18px);
 }
 
 .process-section .small-pill {
@@ -695,41 +756,101 @@ section {
 }
 
 .process-map {
-  --line-y: 24px;
+  --node-size: clamp(66px, 5.2vw, 78px);
+  --line-y: calc(var(--node-size) / 2);
   position: relative;
   display: grid;
   width: 100%;
   grid-template-columns: repeat(6, 1fr);
-  gap: clamp(7px, 1vw, 12px);
-  margin-top: clamp(18px, 3vh, 28px);
-  padding: 10px 0 8px;
+  gap: clamp(6px, 0.85vw, 11px);
+  margin-top: clamp(14px, 2.4vh, 22px);
+  padding: 8px 0 4px;
 }
 
-.process-map::before {
+.process-map::before,
+.process-map::after {
   content: '';
   position: absolute;
-  top: calc(10px + var(--line-y));
-  left: clamp(22px, 4vw, 28px);
-  right: clamp(22px, 4vw, 28px);
+  top: calc(8px + var(--line-y));
+  left: calc(var(--node-size) / 2);
+  right: calc(var(--node-size) / 2);
   z-index: 0;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #72c8ff, #2f8fd8);
+  pointer-events: none;
+}
+
+.process-map::before {
+  background: linear-gradient(
+    90deg,
+    rgba(42, 114, 174, 0.24),
+    rgba(108, 190, 246, 0.54),
+    rgba(42, 114, 174, 0.24)
+  );
   box-shadow:
-    0 0 10px rgba(93, 184, 244, 0.34),
-    0 0 20px rgba(68, 141, 217, 0.16);
+    0 0 7px rgba(93, 184, 244, 0.22),
+    0 0 16px rgba(68, 141, 217, 0.1);
+  opacity: 0.78;
   transform: scaleX(0);
   transform-origin: left;
-  animation: revealProcessLine 720ms ease-out forwards;
+}
+
+.process-map::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(180, 231, 255, 0) 34%,
+    rgba(180, 231, 255, 0.72) 50%,
+    rgba(92, 190, 255, 0) 66%,
+    transparent 100%
+  );
+  background-size: 240% 100%;
+  opacity: 0;
+}
+
+.process-section.is-visible .process-map::before {
+  animation: processLineReveal 820ms ease-out forwards;
+  animation-delay: 220ms;
+}
+
+.process-section.is-visible .process-map::after {
+  animation:
+    processLineSweep 4.8s ease-in-out 960ms infinite,
+    processLineSweepFade 820ms ease-out 840ms forwards;
 }
 
 .process-step {
+  --node-lift: 0px;
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-rows: calc(var(--line-y) + 28px) auto;
+  grid-template-rows: var(--node-size) auto;
   justify-items: center;
   min-width: 0;
+}
+
+.process-step:nth-child(odd) {
+  --node-lift: -5px;
+}
+
+.process-step:nth-child(even) {
+  --node-lift: 5px;
+}
+
+.process-step::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--node-size) + 3px);
+  left: 50%;
+  z-index: 0;
+  width: 1px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(139, 205, 246, 0.58), rgba(139, 205, 246, 0));
+  box-shadow: 0 0 10px rgba(103, 193, 250, 0.16);
+  opacity: 0;
+  transform: translateX(-50%) scaleY(0.4);
+  transform-origin: top;
 }
 
 .process-node {
@@ -739,57 +860,77 @@ section {
   align-items: center;
   justify-content: center;
   align-self: start;
-  width: 52px;
-  height: 52px;
-  border: 1px solid rgba(153, 215, 255, 0.38);
+  width: var(--node-size);
+  height: var(--node-size);
+  border: 1px solid rgba(177, 222, 255, 0.24);
   border-radius: 999px;
-  color: #dff3ff;
+  color: rgba(238, 249, 255, 0.92);
   background:
-    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.3), transparent 32%),
-    linear-gradient(180deg, rgba(28, 75, 119, 0.96), rgba(8, 24, 45, 0.98));
+    radial-gradient(circle at 34% 24%, rgba(255, 255, 255, 0.18), transparent 34%),
+    radial-gradient(circle at 50% 92%, rgba(93, 168, 236, 0.18), transparent 52%),
+    linear-gradient(180deg, rgba(31, 74, 118, 0.42), rgba(7, 22, 41, 0.62));
   box-shadow:
-    0 0 0 5px rgba(84, 166, 232, 0.055),
-    0 0 16px rgba(83, 170, 236, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.035),
+    0 9px 22px rgba(2, 8, 18, 0.2),
+    0 0 16px rgba(83, 170, 236, 0.11),
     inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px) saturate(132%);
+  opacity: 0;
+  transform: translateY(calc(var(--node-lift) + 10px)) scale(0.96);
   transition:
+    color 240ms ease-out,
     border-color 220ms ease,
     box-shadow 220ms ease,
-    transform 220ms ease;
+    transform 240ms ease-out;
 }
 
 .process-node svg {
-  width: 23px;
-  height: 23px;
+  width: clamp(28px, 2.35vw, 34px);
+  height: clamp(28px, 2.35vw, 34px);
   fill: none;
   stroke: currentColor;
   stroke-width: 1.75;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 7px rgba(103, 193, 250, 0.22));
+  filter: drop-shadow(0 0 8px rgba(103, 193, 250, 0.18));
 }
 
 .process-card {
   position: relative;
   width: 100%;
-  min-height: 118px;
-  padding: 12px 13px 13px;
-  border-color: rgba(122, 190, 245, 0.17);
+  min-height: 90px;
+  margin-top: 5px;
+  padding: 8px 7px 7px;
+  border-color: rgba(149, 204, 246, 0.075);
   background:
-    linear-gradient(180deg, rgba(18, 37, 62, 0.72), rgba(8, 20, 37, 0.9)),
-    radial-gradient(circle at 18% 0%, rgba(99, 177, 242, 0.12), transparent 52%);
+    linear-gradient(180deg, rgba(20, 40, 66, 0.13), rgba(8, 20, 37, 0.045)),
+    radial-gradient(circle at 50% 0%, rgba(99, 177, 242, 0.055), transparent 58%);
   box-shadow:
-    0 12px 26px rgba(2, 8, 18, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.045);
-  backdrop-filter: blur(12px) saturate(128%);
+    0 6px 14px rgba(2, 8, 18, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.026);
+  backdrop-filter: blur(6px) saturate(112%);
   opacity: 0;
-  transform: translateY(20px);
-  animation: enterProcessCard 560ms ease-out forwards;
-  animation-delay: calc(300ms + (var(--step-index) * 105ms));
+  transform: translateY(10px);
   transition:
     border-color 220ms ease,
     box-shadow 220ms ease,
-    transform 220ms ease,
+    transform 240ms ease-out,
     background 220ms ease;
+}
+
+.process-section.is-visible .process-step::after {
+  animation: processConnectorEnter 420ms ease-out forwards;
+  animation-delay: calc(500ms + (var(--step-index) * 120ms));
+}
+
+.process-section.is-visible .process-node {
+  animation: processNodeEnter 520ms ease-out forwards;
+  animation-delay: calc(360ms + (var(--step-index) * 120ms));
+}
+
+.process-section.is-visible .process-card {
+  animation: enterProcessCard 500ms ease-out forwards;
+  animation-delay: calc(520ms + (var(--step-index) * 120ms));
 }
 
 .process-card-head {
@@ -799,8 +940,8 @@ section {
 }
 
 .process-card-head span {
-  color: var(--accent);
-  font-size: 0.62rem;
+  color: rgba(139, 205, 246, 0.62);
+  font-size: 0.55rem;
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -808,51 +949,105 @@ section {
 
 .process-card strong {
   display: -webkit-box;
-  margin-top: 8px;
+  margin-top: 6px;
   overflow: hidden;
   color: #f5fbff;
-  font-size: 0.9rem;
-  line-height: 1.12;
+  font-size: clamp(0.66rem, 0.72vw, 0.78rem);
+  line-height: 1.18;
   text-align: center;
+  transition: color 220ms ease;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 4;
 }
 
 .process-card p {
   display: -webkit-box;
-  margin-top: 7px;
+  margin-top: 5px;
   overflow: hidden;
   color: rgba(220, 233, 247, 0.72);
-  font-size: 0.76rem;
-  line-height: 1.32;
+  font-size: 0.68rem;
+  line-height: 1.28;
   text-align: center;
+  transition: color 220ms ease;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
 .process-step:hover .process-node,
 .process-step:focus-within .process-node {
-  border-color: rgba(180, 228, 255, 0.72);
+  color: #ffffff;
+  border-color: rgba(183, 229, 255, 0.68);
   box-shadow:
-    0 0 0 7px rgba(84, 166, 232, 0.08),
-    0 0 22px rgba(101, 195, 255, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px) scale(1.035);
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 14px 30px rgba(2, 8, 18, 0.24),
+    0 0 26px rgba(101, 195, 255, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transform: translateY(calc(var(--node-lift) - 4px)) scale(1.045);
 }
 
 .process-step:hover .process-card,
 .process-step:focus-within .process-card {
-  border-color: rgba(129, 205, 255, 0.34);
+  border-color: rgba(129, 205, 255, 0.26);
   box-shadow:
-    0 16px 34px rgba(2, 8, 18, 0.3),
-    0 0 18px rgba(78, 159, 228, 0.12),
+    0 10px 22px rgba(2, 8, 18, 0.12),
+    0 0 18px rgba(78, 159, 228, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  transform: translateY(-3px);
+  background:
+    linear-gradient(180deg, rgba(24, 49, 78, 0.18), rgba(8, 20, 37, 0.07)),
+    radial-gradient(circle at 50% 0%, rgba(99, 177, 242, 0.08), transparent 58%);
+  transform: translateY(-4px);
 }
 
-@keyframes revealProcessLine {
+.process-step:hover .process-card strong,
+.process-step:focus-within .process-card strong {
+  color: #ffffff;
+}
+
+.process-step:hover .process-card p,
+.process-step:focus-within .process-card p {
+  color: rgba(232, 243, 255, 0.82);
+}
+
+@keyframes processIntroFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes processLineReveal {
   to {
     transform: scaleX(1);
+  }
+}
+
+@keyframes processLineSweepFade {
+  to {
+    opacity: 0.9;
+  }
+}
+
+@keyframes processLineSweep {
+  from {
+    background-position: 160% 50%;
+  }
+
+  to {
+    background-position: -60% 50%;
+  }
+}
+
+@keyframes processNodeEnter {
+  to {
+    opacity: 1;
+    transform: translateY(var(--node-lift)) scale(1);
+  }
+}
+
+@keyframes processConnectorEnter {
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scaleY(1);
   }
 }
 
@@ -865,6 +1060,12 @@ section {
 
 @media (prefers-reduced-motion: reduce) {
   .process-map::before,
+  .process-map::after,
+  .process-section .section-kicker,
+  .process-section h2,
+  .process-section .section-lead,
+  .process-node,
+  .process-step::after,
   .process-card {
     animation: none;
   }
@@ -873,6 +1074,15 @@ section {
     transform: scaleX(1);
   }
 
+  .process-map::after {
+    opacity: 0;
+  }
+
+  .process-section .section-kicker,
+  .process-section h2,
+  .process-section .section-lead,
+  .process-node,
+  .process-step::after,
   .process-card {
     opacity: 1;
     transform: none;
@@ -891,6 +1101,32 @@ section {
     linear-gradient(90deg, rgba(7, 18, 34, 0.95), rgba(9, 24, 43, 0.78)),
     url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1800&q=80') center/cover;
   border: 1px solid rgba(122, 174, 230, 0.14);
+}
+
+.main-benefits {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-benefits li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.main-benefits li::before {
+  content: '';
+  position: absolute;
+  top: 0.5em;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--accent);
 }
 
 .benefit-tags {
@@ -953,6 +1189,35 @@ section {
   line-height: 1.45;
 }
 
+.line-list ul,
+.partners-list {
+  display: grid;
+  gap: 7px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.line-list li,
+.partners-list li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 0.88rem;
+  line-height: 1.34;
+}
+
+.line-list li::before,
+.partners-list li::before {
+  content: '';
+  position: absolute;
+  top: 0.48em;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
 .partners-section {
   position: relative;
   min-height: 560px;
@@ -979,6 +1244,14 @@ section {
   margin-top: 20px;
   font-size: 1.1rem;
   line-height: 1.55;
+}
+
+.partners-list {
+  max-width: 780px;
+}
+
+.partners-list li {
+  color: rgba(232, 243, 255, 0.82);
 }
 
 .partners-content .primary-button {
@@ -1214,6 +1487,8 @@ section {
     font-size: clamp(3.8rem, 7.4vw, 5.5rem);
   }
 
+  .about-section h2,
+  .sponsored-panel h2,
   .intro-band h2,
   .process-section h2,
   .projects-section h2,
@@ -1365,6 +1640,8 @@ section {
     padding: 38px 0 52px;
   }
 
+  .about-section h2,
+  .sponsored-panel h2,
   .intro-band h2,
   .process-section h2,
   .projects-section h2,
@@ -1388,19 +1665,22 @@ section {
   }
 
   .process-map {
-    --line-y: 30px;
+    --node-size: 60px;
+    --line-y: calc(var(--node-size) / 2);
     grid-template-columns: 1fr;
     gap: 18px;
     margin-top: 38px;
     padding: 14px 12px 8px;
   }
 
-  .process-map::before {
+  .process-map::before,
+  .process-map::after {
     display: none;
   }
 
   .process-step {
-    grid-template-rows: calc(var(--line-y) + 34px) auto;
+    --node-lift: 0px;
+    grid-template-rows: var(--node-size) auto;
   }
 
   .process-card {
@@ -1459,6 +1739,10 @@ section {
   }
 
   .benefits-panel {
+    padding: 32px 22px;
+  }
+
+  .sponsored-panel {
     padding: 32px 22px;
   }
 

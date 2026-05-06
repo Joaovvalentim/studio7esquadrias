@@ -33,110 +33,132 @@ const images = {
 
 const navItems = [
   { id: 'principal', label: 'Principal' },
+  { id: 'quem-somos', label: 'Quem somos' },
   { id: 'diferenciais', label: 'Diferenciais' },
   { id: 'estrutura', label: 'Estrutura' },
   { id: 'funciona', label: 'Como funciona' },
   { id: 'beneficios', label: 'Benefícios' },
   { id: 'projetos', label: 'Projetos' },
-  { id: 'serralheiros', label: 'Parceiros' },
+  { id: 'serralheiros', label: 'Parceiros Serralheiros' },
   { id: 'onde-estamos', label: 'Onde estamos' },
-  { id: 'contato', label: 'Fale conosco' },
+  { id: 'contato', label: 'Contato' },
+]
+
+const aboutText = [
+  'Somos uma empresa especializada na fabricação de esquadrias de alumínio sob demanda e personalizadas.',
+  'Aqui você produz suas peças de acordo com seu projeto, tendo total autonomia para comprar seus próprios materiais e apenas utilizar de nossa estrutura de ponta e nossos profissionais capacitados para fazer tudo como sempre sonhou.',
+  'Com mais de 20 anos de experiência, estamos prontos para te auxiliar e garantir uma produção certa e justa, dando possibilidades de fazer suas instalações de maneira independente e administrar o tempo de acordo com suas necessidades.',
 ]
 
 const differentiators = [
   {
     image: images.factory,
-    title: 'Fábrica com equipamento de ponta',
-    items: ['Suporte técnico', 'Produção inteligente e eficiente'],
+    title: 'Fábrica com equipamentos de ponta',
+    items: ['Suporte técnico', 'Produção inteligente e eficiente', 'Agilidade', 'Qualidade garantida'],
   },
   {
     image: images.showroom,
-    title: 'Showroom e atendimento consultivo',
-    items: ['Projetos diversos e personalizados', 'Acompanhamento próximo'],
+    title: 'Showroom exclusivo',
+    items: ['Itens diversos e personalizados', 'Mostruários e peças', 'Experiência demonstrada na prática'],
   },
   {
     image: images.support,
     title: 'Atendimento personalizado',
-    items: ['Cada cliente escolhe seu tipo de atendimento', 'Adequação para cada obra'],
+    items: ['Cada cliente escolhe seu tipo de atendimento', 'Adequação à cada obra', 'Personalização'],
   },
   {
     image: images.installation,
-    title: 'Instalação com parceiros capacitados',
-    items: ['Listas exclusivas', 'Parceiros qualificados'],
+    title: 'Instalação através da indicação de parceiros',
+    items: ['Listas de instaladores parceiros', 'Poder de escolha e flexibilidade', 'Instruções técnicas detalhadas'],
   },
 ]
 
 const structureItems = [
   {
     image: images.factory,
-    caption: 'Linha de produção estruturada',
+    caption: 'Controle',
     alt: 'Linha de produção industrial com equipamentos e bancadas de trabalho organizadas',
   },
   {
     image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1400&q=82',
-    caption: 'Controle de qualidade em cada etapa',
+    caption: 'Precisão',
     alt: 'Profissional inspecionando peças em ambiente de fábrica com controle técnico',
   },
   {
     image: 'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=1400&q=82',
-    caption: 'Precisão nos acabamentos',
+    caption: 'Personalização',
     alt: 'Detalhe de maquinário industrial usado para acabamentos precisos em perfis metálicos',
   },
   {
     image: images.partners,
-    caption: 'Infraestrutura própria para alto padrão',
-    alt: 'Área fabril ampla com estrutura produtiva preparada para projetos de alto padrão',
+    caption: 'Qualidade',
+    alt: 'Área fabril ampla com estrutura produtiva preparada para qualidade em cada detalhe',
   },
 ]
 
 const processJourney = [
   {
     icon: 'phone',
-    title: 'Cliente entra em contato',
-    text: 'Entendemos sua necessidade e coletamos as informações iniciais.',
+    title: 'Cliente entra em contato conosco',
   },
   {
     icon: 'analysis',
-    title: 'Análise técnica',
-    text: 'Avaliamos medidas, ambiente e viabilidade do projeto.',
+    title: 'Adequação do projeto de acordo com as necessidades',
   },
   {
     icon: 'measure',
-    title: 'Adequação do projeto',
-    text: 'Ajustamos o projeto conforme a necessidade da obra.',
+    title: 'Ajustes dos detalhes e logística do projeto',
   },
   {
     icon: 'logistics',
-    title: 'Detalhes e logística',
-    text: 'Alinhamos prazos, materiais e logística de entrega.',
+    title: 'Produção exclusiva em nossa fábrica',
   },
   {
     icon: 'factory',
-    title: 'Produção',
-    text: 'A fabricação segue controle, precisão e padrão de qualidade.',
+    title: 'Peças prontas de acordo com o projeto e prazos',
   },
   {
     icon: 'delivery',
-    title: 'Entrega final',
-    text: 'O produto chega pronto para valorizar o empreendimento.',
+    title: 'Disponibilização do pedido pronto para instalação',
   },
+]
+
+const mainBenefits = [
+  'Produtividade e qualidade',
+  'Garantia de recebimento',
+  'Compras certas e precisas',
+  'Tempo de sobra para cuidar de outros assuntos',
+  'Lucratividade e economia sem dor de cabeça',
 ]
 
 const benefits = [
   'Atendimento exclusivo',
   'Orçamento correto',
-  'Contrato e faturamento direto',
-  'Suporte na compra de materiais',
+  'Contrato e faturamento diretos',
+  'Suporte na compra de materiais e insumos',
   'Apoio direto ao cliente',
-  'Infraestrutura personalizada',
+  'Adequação de acordo com as necessidades',
+  'Economia sentida no bolso',
+  'Infraestrutura e suporte personalizados',
 ]
 
 const projectLines = [
-  { title: 'Linhas econômicas e cotidianas', text: 'Soluções objetivas para obras com bom custo e execução clara.' },
-  { title: 'Linhas robustas e pesadas', text: 'Perfis mais fortes para projetos que exigem presença e desempenho.' },
-  { title: 'Linhas premium e vãos maiores', text: 'Acabamento superior, leitura arquitetônica e diferenciação visual.' },
-  { title: 'Linhas modernas e minimalistas', text: 'Opções como chumbada, aura e outras linhas de aparência limpa.' },
-  { title: 'Linhas personalizadas', text: 'Soluções sob medida para necessidades específicas da obra.' },
+  { title: 'Linhas econômicas e cotidianas', items: ['Suprema', 'Mega 25', 'Linha 30', 'Outras a consultar'] },
+  { title: 'Linhas mais pesadas e robustas', items: ['Linha Gold', 'Mega 32', 'Imperial', 'Outras a consultar'] },
+  { title: 'Linhas premium e grandes vãos', items: ['Linha 42', 'Mega 45', 'Perfetta', 'Outras a consultar'] },
+  { title: 'Linhas mais modernas e minimalistas', items: ['Linha Chroma', 'Perfetta', 'Outras a consultar'] },
+  {
+    title: 'Linhas personalizadas e diferenciadas',
+    items: ['Ripados', 'ACM', 'Muxarabis', 'Pergolados', 'Pele de vidro', 'Infinity', 'Outros a consultar'],
+  },
+]
+
+const partnerItems = [
+  'Venda suas esquadrias sem medo, pois fabricamos para você',
+  'Traga seus projetos',
+  'Venha com seus clientes desfrutar de nosso showroom e nossa estrutura completa',
+  'Ganhe tempo para vender ainda mais enquanto fabricamos para você',
+  'Invista na qualidade de suas instalações enquanto sua fabricação está garantida conosco',
 ]
 
 function ProcessIcon({ type }) {
@@ -303,7 +325,7 @@ function App() {
             <img className="brand-logo" src={logo} alt="Studio 7 Esquadrias" />
             <div className="brand-copy">
               <strong>Studio 7</strong>
-              <span>Esquadrias premium</span>
+              <span>Solução em esquadrias</span>
             </div>
           </a>
 
@@ -343,10 +365,9 @@ function App() {
 
           <div className="page-container hero-content">
             <p className="section-kicker">Studio 7 Esquadrias</p>
-            <h1>Soluções sob medida em esquadrias</h1>
+            <h1>Solução em esquadrias</h1>
             <p className="hero-text">
-              Onde seu projeto é executado com respeito, qualidade e preço justo. A Studio 7 entrega
-              soluções em alumínio para transformar o sonho da obra em uma execução clara e confiável.
+              Onde seu projeto ganha vida e é executado com respeito, qualidade e preço justo.
             </p>
 
             <div className="hero-actions">
@@ -360,9 +381,34 @@ function App() {
           </div>
         </section>
 
+        <section className="about-section" data-section id="quem-somos">
+          <div className="page-container split-section">
+            <div>
+              <p className="section-kicker">Quem somos</p>
+              <h2>Quem somos</h2>
+            </div>
+
+            <div className="text-stack">
+              {aboutText.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="sponsored-section">
+          <div className="page-container sponsored-panel">
+            <h2>Cansado de correr atrás de uma empresa séria para realizar o sonho de suas esquadrias?</h2>
+            <p>
+              A Studio 7 tem a solução para sua obra se transformar no sonho que tanto idealizou.
+              Aqui você encontra qualidade, preço justo e garantia de entrega.
+            </p>
+          </div>
+        </section>
+
         <section className="intro-band" data-section id="diferenciais">
           <div className="page-container">
-            <h2>Nossos Diferenciais</h2>
+            <h2>Diferenciais</h2>
 
             <div className="differentials-grid">
               {differentiators.map((item) => (
@@ -391,8 +437,8 @@ function App() {
         <section className="delivery-section" data-section id="estrutura">
           <div className="page-container structure-layout">
             <div className="structure-heading">
-              <p className="section-kicker">Nossa Estrutura</p>
-              <h2>Controle, precisão e qualidade em cada detalhe.</h2>
+              <p className="section-kicker">Estrutura</p>
+              <h2>Controle, precisão, personalização e qualidade em cada detalhe.</h2>
             </div>
 
             <div className="structure-carousel" aria-label="Fotos da estrutura da fábrica Studio 7">
@@ -433,11 +479,10 @@ function App() {
           </div>
         </section>
 
-        <section className="process-section" data-section id="funciona">
+        <section className={`process-section ${activeSection === 'funciona' ? 'is-visible' : ''}`} data-section id="funciona">
           <div className="page-container">
-            <p className="section-kicker">COMO FUNCIONA</p>
-            <h2>Do primeiro contato à entrega, cada etapa segue um processo claro.</h2>
-            <p className="section-lead">Uma jornada guiada para transformar necessidade, projeto e logística em esquadrias prontas para a obra.</p>
+            <p className="section-kicker">Como funciona</p>
+            <h2>Somos a ferramenta que você procura para acertar o caminho e receber em mãos o diferencial que tanto almeja.</h2>
 
             <div className="process-map" aria-label="Jornada do cliente Studio 7">
               {processJourney.map((step, index) => (
@@ -447,10 +492,9 @@ function App() {
                   </div>
                   <div className="process-card">
                     <div className="process-card-head">
-                      <span>Etapa {index + 1}</span>
+                      <span>Passo {index + 1}</span>
                     </div>
                     <strong>{step.title}</strong>
-                    <p>{step.text}</p>
                   </div>
                 </article>
               ))}
@@ -467,8 +511,12 @@ function App() {
           <div className="page-container benefits-panel">
             <div>
               <p className="section-kicker">Benefícios</p>
-              <h2>Produtividade e qualidade</h2>
-              <p>Você recebe peças prontas e com acabamento superior.</p>
+              <h2>Benefícios</h2>
+              <ul className="main-benefits">
+                {mainBenefits.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </div>
 
             <div className="benefit-tags">
@@ -481,8 +529,7 @@ function App() {
 
         <section className="projects-section" data-section id="projetos">
           <div className="page-container">
-            <h2>Projetos Studio 7</h2>
-            <p className="section-lead">Linhas e soluções para obras residenciais, corporativas e serralherias parceiras.</p>
+            <h2>Projetos</h2>
 
             <div className="projects-layout">
               <article className="project-photo large">
@@ -500,7 +547,11 @@ function App() {
               {projectLines.map((item) => (
                 <article key={item.title}>
                   <h3>{item.title}</h3>
-                  <p>{item.text}</p>
+                  <ul>
+                    {item.items.map((line) => (
+                      <li key={line}>{line}</li>
+                    ))}
+                  </ul>
                 </article>
               ))}
             </div>
@@ -512,11 +563,16 @@ function App() {
           <div className="partners-overlay"></div>
           <div className="page-container partners-content">
             <p className="section-kicker">Parceiros Serralheiros</p>
-            <h2>Fabricamos para quem precisa de campo fabril e prazo previsível.</h2>
+            <h2>Parceiros Serralheiros</h2>
             <p>
-              Executamos a fabricação das obras de sua serralheria, ajudando empresas que não possuem
-              estrutura fabril ou que estão acima da capacidade produtiva.
+              Executamos também a fabricação das obras de sua empresa.
+              Terceirização para quem não tem campo fabril ou para sua empresa que está acima da capacidade produtiva.
             </p>
+            <ul className="partners-list">
+              {partnerItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
             <a className="primary-button" href={contact.whatsappUrl} target="_blank" rel="noreferrer">
               Falar com a Studio 7
             </a>
@@ -526,8 +582,8 @@ function App() {
         <section className="location-section" data-section id="onde-estamos">
           <div className="page-container split-section">
             <div>
-              <p className="section-kicker">Onde Estamos</p>
-              <h2>Atendimento na região de Campinas e alinhamento direto pelo WhatsApp.</h2>
+              <p className="section-kicker">Onde estamos</p>
+              <h2>Onde estamos</h2>
             </div>
 
             <div className="contact-strip">
@@ -543,8 +599,8 @@ function App() {
         <section className="contact-section" data-section id="contato">
           <div className="page-container contact-layout">
             <div>
-              <p className="section-kicker">Fale Conosco</p>
-              <h2>Envie o contexto da sua obra e seguimos a conversa pelo WhatsApp.</h2>
+              <p className="section-kicker">Contato</p>
+              <h2>Contato</h2>
             </div>
 
             <form className="contact-form" onSubmit={handleContactSubmit}>
@@ -575,9 +631,10 @@ function App() {
       <footer className="site-footer">
         <div className="page-container footer-inner">
           <img src={logo} alt="Studio 7 Esquadrias" />
-          <p>Studio 7 Esquadrias. Soluções sob medida para obras que exigem qualidade e precisão.</p>
+          <p>Studio 7 Esquadrias. Solução em esquadrias.</p>
           <div className="footer-links">
             <a href="#principal">Principal</a>
+            <a href="#quem-somos">Quem somos</a>
             <a href="#diferenciais">Diferenciais</a>
             <a href="#contato">Contato</a>
           </div>
