@@ -1,7 +1,41 @@
-﻿import { useCallback, useEffect, useRef, useState } from 'react'
+﻿import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
+import OptimizedImage from './components/OptimizedImage'
+import { usePreloadImages } from './hooks/usePreloadImages'
 
 const logo = '/logo_0.png'
+
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+
+function useAnimateOnce({ threshold = 0.15, rootMargin = '0px 0px -10% 0px' } = {}) {
+  const ref = useRef(null)
+  const [hasAnimated, setHasAnimated] = useState(
+    () => typeof IntersectionObserver === 'undefined' || prefersReducedMotion(),
+  )
+
+  useEffect(() => {
+    if (hasAnimated) return
+    const node = ref.current
+    if (!node) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setHasAnimated(true)
+          observer.disconnect()
+        }
+      },
+      { threshold, rootMargin },
+    )
+    observer.observe(node)
+
+    return () => observer.disconnect()
+  }, [hasAnimated, threshold, rootMargin])
+
+  return [ref, hasAnimated]
+}
 
 const contact = {
   whatsappLabel: '+55 19 97402-7431',
@@ -27,7 +61,6 @@ const images = {
   projectB: '/Projetos%20possibilidades/projetos%20possibilidades%201.jpg',
   projectC: '/Projetos%20possibilidades/projetos%20possibilidades2.jpg',
   partners: '/Parceiros%20serralheiros%20possibilidades/parceiros%20serralheiros.jpg',
-  locationOffice: '/onde%20estamos/escritorio.jpeg',
   locationFacade: '/onde%20estamos/fachada.jpeg',
 }
 
@@ -43,6 +76,33 @@ const navItems = [
   { id: 'onde-estamos', label: 'Onde estamos' },
   { id: 'contato', label: 'Contato' },
 ]
+
+const sectionImages = {
+  principal: [],
+  'quem-somos': ['/Diferenciais%20possibilidades/fabrica.jpeg'],
+  diferenciais: [
+    '/Diferenciais%20possibilidades/fabrica.jpeg',
+    '/Diferenciais%20possibilidades/showroom.jpg',
+    '/Diferenciais%20possibilidades/atendimento%20personalizado.jpg',
+    '/Diferenciais%20possibilidades/instala%20com%20indicacao.png',
+  ],
+  estrutura: [
+    '/Estrutura%20possibilidades/estrutura%20carrousel1.jpeg',
+    '/Estrutura%20possibilidades/estrutura%20carrousel2.jpg',
+    '/Estrutura%20possibilidades/estrutura%20carrousel3.jpg',
+    '/Estrutura%20possibilidades/estrutura%20carrousel4.jpg',
+  ],
+  funciona: [],
+  beneficios: [],
+  projetos: [
+    '/Projetos%20possibilidades/Projetos.jpg',
+    '/Projetos%20possibilidades/projetos%20possibilidades%201.jpg',
+    '/Projetos%20possibilidades/projetos%20possibilidades2.jpg',
+  ],
+  serralheiros: ['/Parceiros%20serralheiros%20possibilidades/parceiros%20serralheiros.jpg'],
+  'onde-estamos': ['/onde%20estamos/fachada.jpeg'],
+  contato: [],
+}
 
 const aboutLead = 'Mais de 20 anos transformando projetos em esquadrias de alumínio sob medida.'
 
@@ -169,7 +229,7 @@ const partnerItems = [
   'Invista na qualidade de suas instalações enquanto sua fabricação está garantida conosco',
 ]
 
-function ProcessIcon({ type }) {
+const ProcessIcon = memo(function ProcessIcon({ type }) {
   const icons = {
     phone: (
       <>
@@ -224,12 +284,63 @@ function ProcessIcon({ type }) {
       {icons[type]}
     </svg>
   )
-}
+})
+
+const MAP_SRC =
+  'https://www.google.com/maps?q=Av.+Anton+Von+Zuben,+3145,+Jardim+São+José,+Campinas+-+SP,+13051-145&output=embed'
+
+const DeferredMap = memo(function DeferredMap() {
+  const wrapRef = useRef(null)
+  const [shouldLoad, setShouldLoad] = useState(false)
+
+  useEffect(() => {
+    if (!wrapRef.current || shouldLoad) return
+    const node = wrapRef.current
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShouldLoad(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '600px' },
+    )
+    observer.observe(node)
+
+    return () => observer.disconnect()
+  }, [shouldLoad])
+
+  return (
+    <div ref={wrapRef} className="mapa-frame">
+      {shouldLoad ? (
+        <iframe
+          src={MAP_SRC}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="Localização da Studio 7 Esquadrias"
+        />
+      ) : null}
+    </div>
+  )
+})
+
 function App() {
   const [isTopbarSolid, setIsTopbarSolid] = useState(false)
   const [activeSection, setActiveSection] = useState(navItems[0].id)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const structureViewportRef = useRef(null)
+  const [aboutRef, isAboutVisible] = useAnimateOnce()
+  const [processRef, isProcessVisible] = useAnimateOnce()
+
+  const upcomingImages = useMemo(() => {
+    const currentIndex = navItems.findIndex((item) => item.id === activeSection)
+    if (currentIndex === -1) return []
+    const next1 = navItems[currentIndex + 1]?.id
+    const next2 = navItems[currentIndex + 2]?.id
+    return [...(sectionImages[next1] || []), ...(sectionImages[next2] || [])]
+  }, [activeSection])
+
+  usePreloadImages(upcomingImages)
 
   const getHeaderHeight = useCallback(() => {
     const header = document.querySelector('.topbar')
@@ -252,25 +363,12 @@ function App() {
     const headerHeight = getHeaderHeight()
     const elementPosition = target.getBoundingClientRect().top + window.pageYOffset
     const offsetPosition = Math.max(0, elementPosition - headerHeight)
+    const finalBehavior = behavior === 'smooth' && prefersReducedMotion() ? 'auto' : behavior
 
     window.scrollTo({
       top: offsetPosition,
-      behavior,
+      behavior: finalBehavior,
     })
-
-    if (id === 'projetos') {
-      const logProjectPosition = () => {
-        const top = target.getBoundingClientRect().top
-
-        console.log('Debug #projetos scroll top:', Math.round(top - getHeaderHeight()))
-      }
-
-      if ('onscrollend' in window) {
-        window.addEventListener('scrollend', logProjectPosition, { once: true })
-      } else {
-        window.setTimeout(logProjectPosition, 3500)
-      }
-    }
   }, [getHeaderHeight])
 
   const moveStructureCarousel = (direction) => {
@@ -314,9 +412,18 @@ function App() {
   }
 
   useEffect(() => {
-    const handleScroll = () => setIsTopbarSolid(window.scrollY > 24)
+    let ticking = false
+    const updateSolid = () => {
+      setIsTopbarSolid(window.scrollY > 24)
+      ticking = false
+    }
+    const handleScroll = () => {
+      if (ticking) return
+      ticking = true
+      window.requestAnimationFrame(updateSolid)
+    }
 
-    handleScroll()
+    updateSolid()
     window.addEventListener('scroll', handleScroll, { passive: true })
 
     return () => window.removeEventListener('scroll', handleScroll)
@@ -324,9 +431,20 @@ function App() {
 
   useEffect(() => {
     updateHeaderHeight()
-    window.addEventListener('resize', updateHeaderHeight)
+    let raf = 0
+    const onResize = () => {
+      if (raf) return
+      raf = window.requestAnimationFrame(() => {
+        raf = 0
+        updateHeaderHeight()
+      })
+    }
+    window.addEventListener('resize', onResize, { passive: true })
 
-    return () => window.removeEventListener('resize', updateHeaderHeight)
+    return () => {
+      if (raf) window.cancelAnimationFrame(raf)
+      window.removeEventListener('resize', onResize)
+    }
   }, [updateHeaderHeight])
 
   useEffect(() => {
@@ -359,18 +477,28 @@ function App() {
 
     if (animatedElements.length === 0) return
 
+    if (prefersReducedMotion()) {
+      animatedElements.forEach((element) => element.classList.add('is-visible'))
+      return
+    }
+
     const observer = new IntersectionObserver(
       (entries, obs) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            obs.unobserve(entry.target)
+          if (!entry.isIntersecting) return
+          const el = entry.target
+          el.classList.add('is-visible')
+          const cleanup = () => {
+            el.style.willChange = 'auto'
+            el.removeEventListener('transitionend', cleanup)
           }
+          el.addEventListener('transitionend', cleanup, { once: true })
+          obs.unobserve(el)
         })
       },
       {
-        threshold: 0.18,
-        rootMargin: '0px 0px -8% 0px',
+        threshold: 0.05,
+        rootMargin: '0px 0px 10% 0px',
       },
     )
 
@@ -389,9 +517,10 @@ function App() {
 
   useEffect(() => {
     const handleAnchorClick = (event) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey) return
       const anchor = event.target.closest('a[href^="#"]')
 
-      if (!anchor || event.defaultPrevented) return
+      if (!anchor) return
 
       const id = anchor.getAttribute('href')?.slice(1)
 
@@ -412,6 +541,26 @@ function App() {
 
     return () => document.removeEventListener('click', handleAnchorClick)
   }, [scrollToSection])
+
+  useEffect(() => {
+    const viewport = structureViewportRef.current
+    const track = viewport?.querySelector('.structure-track')
+
+    if (!viewport || !track) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          track.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused'
+        })
+      },
+      { rootMargin: '120px' },
+    )
+
+    observer.observe(viewport)
+
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     const id = window.location.hash.slice(1)
@@ -441,7 +590,15 @@ function App() {
       <header className={`topbar ${isTopbarSolid ? 'is-solid' : ''}`}>
         <div className="topbar-inner">
           <a className="brand" href="#principal" aria-label="Ir para o início" onClick={(event) => handleSectionLinkClick(event, 'principal')}>
-            <img className="brand-logo" src={logo} alt="Studio 7 Esquadrias" />
+            <img
+              className="brand-logo"
+              src={logo}
+              alt="Studio 7 Esquadrias"
+              width="152"
+              height="152"
+              decoding="async"
+              fetchpriority="high"
+            />
           </a>
 
           <button
@@ -475,7 +632,15 @@ function App() {
 
       <main>
         <section className="hero-section" data-section id="principal">
-          <img className="hero-bg" src={images.hero} alt="" />
+          <OptimizedImage
+            className="hero-bg"
+            src={images.hero}
+            alt=""
+            width="1920"
+            height="1080"
+            sizes="100vw"
+            priority
+          />
           <div className="hero-scrim"></div>
 
           <div className="page-container hero-content">
@@ -496,13 +661,19 @@ function App() {
           </div>
         </section>
 
-        <section className={`about-section ${activeSection === 'quem-somos' ? 'is-visible' : ''}`} data-section id="quem-somos">
+        <section ref={aboutRef} className={`about-section ${isAboutVisible ? 'is-visible' : ''}`} data-section id="quem-somos">
           <div className="about-glow" aria-hidden="true"></div>
           <div className="page-container about-grid">
             <div className="about-visual">
               <div className="about-media">
                 <div className="about-image-wrap">
-                  <img src={images.factory} alt="Estrutura da fábrica Studio 7 Esquadrias" />
+                  <OptimizedImage
+                    src={images.factory}
+                    alt="Estrutura da fábrica Studio 7 Esquadrias"
+                    width="1280"
+                    height="853"
+                    sizes="(min-width: 900px) 50vw, 100vw"
+                  />
                 </div>
                 <div className="about-image-glow" aria-hidden="true"></div>
                 <div className="about-badge">
@@ -541,7 +712,13 @@ function App() {
                   data-animate="fade-up"
                   data-delay={`${Math.min(100 + index * 100, 400)}`}
                 >
-                  <img src={item.image} alt="" />
+                  <OptimizedImage
+                    src={item.image}
+                    alt=""
+                    width="800"
+                    height="600"
+                    sizes="(min-width: 1100px) 25vw, (min-width: 700px) 50vw, 100vw"
+                  />
                   <div>
                     <h3>{item.title}</h3>
                     <ul>
@@ -576,7 +753,14 @@ function App() {
                     <div className="structure-sequence" aria-hidden={setIndex === 1 ? 'true' : undefined} key={setIndex}>
                       {structureItems.map((item) => (
                         <figure className="structure-slide" key={`${setIndex}-${item.caption}`}>
-                          <img src={item.image} alt={setIndex === 0 ? item.alt : ''} draggable="false" />
+                          <OptimizedImage
+                            src={item.image}
+                            alt={setIndex === 0 ? item.alt : ''}
+                            width="640"
+                            height="400"
+                            sizes="(min-width: 1100px) 33vw, (min-width: 700px) 50vw, 80vw"
+                            draggable={false}
+                          />
                           <figcaption>{item.caption}</figcaption>
                         </figure>
                       ))}
@@ -607,7 +791,7 @@ function App() {
           </div>
         </section>
 
-        <section className={`process-section ${activeSection === 'funciona' ? 'is-visible' : ''}`} data-section id="funciona">
+        <section ref={processRef} className={`process-section ${isProcessVisible ? 'is-visible' : ''}`} data-section id="funciona">
           <div className="page-container">
             <p className="section-kicker">Como funciona</p>
             <h2>Somos a ferramenta que você procura para acertar o caminho e receber em mãos o diferencial que tanto almeja.</h2>
@@ -661,13 +845,31 @@ function App() {
 
             <div className="projects-layout">
               <article className="project-photo large" data-animate="zoom-soft" data-delay="100">
-                <img src={images.projectA} alt="" />
+                <OptimizedImage
+                  src={images.projectA}
+                  alt=""
+                  width="1280"
+                  height="853"
+                  sizes="(min-width: 1100px) 66vw, 100vw"
+                />
               </article>
               <article className="project-photo" data-animate="zoom-soft" data-delay="200">
-                <img src={images.projectB} alt="" />
+                <OptimizedImage
+                  src={images.projectB}
+                  alt=""
+                  width="800"
+                  height="600"
+                  sizes="(min-width: 1100px) 33vw, (min-width: 700px) 50vw, 100vw"
+                />
               </article>
               <article className="project-photo" data-animate="zoom-soft" data-delay="300">
-                <img src={images.projectC} alt="" />
+                <OptimizedImage
+                  src={images.projectC}
+                  alt=""
+                  width="800"
+                  height="600"
+                  sizes="(min-width: 1100px) 33vw, (min-width: 700px) 50vw, 100vw"
+                />
               </article>
             </div>
 
@@ -691,7 +893,14 @@ function App() {
         </section>
 
         <section className="partners-section" data-section id="serralheiros">
-          <img src={images.partners} alt="" />
+          <OptimizedImage
+            src={images.partners}
+            alt=""
+            width="1920"
+            height="1080"
+            sizes="100vw"
+            rootMargin="800px"
+          />
           <div className="partners-overlay"></div>
           <div className="page-container partners-content">
             <p className="section-kicker" data-animate="fade-up">Parceiros Serralheiros</p>
@@ -738,17 +947,16 @@ function App() {
 
             <div className="onde-right">
               <div className="mapa-card" aria-label="Mapa da fábrica Studio 7 em Campinas" data-animate="zoom-soft" data-delay="200">
-                <iframe
-                  src="https://www.google.com/maps?q=Av.+Anton+Von+Zuben,+3145,+Jardim+São+José,+Campinas+-+SP,+13051-145&output=embed"
-                  loading="lazy"
-                  title="Localização da Studio 7 Esquadrias"
-                ></iframe>
+                <DeferredMap />
               </div>
 
               <figure className="fachada-card" data-animate="zoom-soft" data-delay="300">
-                <img
+                <OptimizedImage
                   src={images.locationFacade}
                   alt="Fachada da fábrica Studio 7 Esquadrias em Campinas"
+                  width="640"
+                  height="480"
+                  sizes="(min-width: 900px) 40vw, 100vw"
                 />
               </figure>
             </div>
@@ -818,7 +1026,7 @@ function App() {
       <footer className="site-footer">
         <div className="page-container footer-container">
           <div className="footer-col footer-brand">
-            <img className="footer-logo" src={logo} alt="Studio 7 Esquadrias" />
+            <img className="footer-logo" src={logo} alt="Studio 7 Esquadrias" width="64" height="64" loading="lazy" decoding="async" />
             <p>Studio 7 Esquadrias. Solução em esquadrias.</p>
           </div>
 

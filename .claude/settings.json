@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls scripts/)",
+      "Bash(ls public/)",
+      "Bash(ls \"public/Diferenciais possibilidades/\" \"public/Estrutura possibilidades/\" \"public/Projetos possibilidades/\" \"public/Pagina principal possibilidades/\" \"public/Parceiros serralheiros possibilidades/\" \"public/onde estamos/\" 2>nul)",
+      "Bash(npm install *)",
+      "Bash(tail -50 \"/c/Users/JOAOVA~1/AppData/Local/Temp/claude/c--Users-JoaoValentim-Desktop-Projetos-studio7esquadrias/0af54288-6c9b-4e5d-8920-cb36d53ddbeb/tasks/bs3pu5rw5.output\")",
+      "Read(//c/Users/JOAOVA~1/AppData/Local/Temp/claude/c--Users-JoaoValentim-Desktop-Projetos-studio7esquadrias/0af54288-6c9b-4e5d-8920-cb36d53ddbeb/tasks/**)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\JoaoValentim\\Desktop\\Projetos\\studio7esquadrias",
+      "C:\\Users\\JoaoValentim\\Desktop\\Projetos\\studio7esquadrias\\public\\Quem somos possibilidades"
+    ]
+  }
+}

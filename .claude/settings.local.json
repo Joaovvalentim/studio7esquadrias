@@ -7,7 +7,10 @@
       "Read(//tmp/escritas_extracted/word/**)",
       "Bash(sed '/^$/d')",
       "Read(//tmp/**)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(stat -c '%s %n' public/logo_0.png src/assets/hero.png src/assets/logo.png src/assets/logo1.png \"public/Beneficios Possibilidades/beneficios possibilidades 1.jpg\" 2>&1; echo \"---\"; which sharp magick convert cwebp 2>&1; node --version 2>&1)",
+      "Read(//c/Users/JoaoValentim/Desktop/Projetos/studio7esquadrias/**)",
+      "Bash(npx vite *)"
     ]
   }
 }
