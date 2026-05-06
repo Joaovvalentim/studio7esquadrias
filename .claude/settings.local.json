@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp \"public/Escritas site.docx\" /tmp/escritas.docx)",
+      "Read(//c/tmp/**)",
+      "Bash(unzip -o escritas.docx -d escritas_extracted)",
+      "Read(//tmp/escritas_extracted/word/**)",
+      "Bash(sed '/^$/d')",
+      "Read(//tmp/**)",
+      "Bash(npm run *)"
+    ]
+  }
+}

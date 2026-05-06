@@ -362,7 +362,9 @@ section {
 .sponsored-panel {
   padding: 54px;
   border-radius: 8px;
-  background: linear-gradient(180deg, rgba(18, 35, 59, 0.72), rgba(11, 24, 42, 0.86));
+  background:
+    linear-gradient(90deg, rgba(7, 18, 34, 0.92), rgba(9, 24, 43, 0.7)),
+    url('/Pagina%20patrocinada%20possibilidades/happy-father-with-daughter-standing-near-open-balcony-smiling.jpg') center/cover;
   border: 1px solid rgba(122, 174, 230, 0.13);
 }
 
@@ -1099,7 +1101,7 @@ section {
   border-radius: 8px;
   background:
     linear-gradient(90deg, rgba(7, 18, 34, 0.95), rgba(9, 24, 43, 0.78)),
-    url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1800&q=80') center/cover;
+    url('/Beneficios%20Possibilidades/beneficios%20possibilidades%201.jpg') center/cover;
   border: 1px solid rgba(122, 174, 230, 0.14);
 }
 

@@ -11,24 +11,19 @@ const contact = {
 }
 
 const images = {
-  hero:
-    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2200&q=85',
-  factory:
-    'https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=1200&q=80',
-  showroom:
-    'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=80',
-  support:
-    'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80',
-  installation:
-    'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80',
-  projectA:
-    'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80',
-  projectB:
-    'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1400&q=80',
-  projectC:
-    'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=80',
-  partners:
-    'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=1600&q=80',
+  hero: '/Pagina%20principal%20possibilidades/design-house-modern-villa-with-open-plan-living-private-bedroom-wing-large-terrace-with-privacy.jpg',
+  factory: '/Diferenciais%20possibilidades/fabrica.jpeg',
+  showroom: '/Diferenciais%20possibilidades/showroom.jpg',
+  support: '/Diferenciais%20possibilidades/atendimento%20personalizado.jpg',
+  installation: '/Diferenciais%20possibilidades/instala%20com%20indicacao.png',
+  structure1: '/Estrutura%20possibilidades/estrutura%20carrousel1.jpeg',
+  structure2: '/Estrutura%20possibilidades/estrutura%20carrousel2.jpg',
+  structure3: '/Estrutura%20possibilidades/estrutura%20carrousel3.jpg',
+  structure4: '/Estrutura%20possibilidades/estrutura%20carrousel4.jpg',
+  projectA: '/Projetos%20possibilidades/Projetos.jpg',
+  projectB: '/Projetos%20possibilidades/projetos%20possibilidades%201.jpg',
+  projectC: '/Projetos%20possibilidades/projetos%20possibilidades2.jpg',
+  partners: '/Parceiros%20serralheiros%20possibilidades/parceiros%20serralheiros.jpg',
 }
 
 const navItems = [
@@ -75,24 +70,24 @@ const differentiators = [
 
 const structureItems = [
   {
-    image: images.factory,
+    image: images.structure1,
     caption: 'Controle',
-    alt: 'Linha de produção industrial com equipamentos e bancadas de trabalho organizadas',
+    alt: 'Estrutura da fábrica Studio 7 com equipamentos preparados para esquadrias de alumínio',
   },
   {
-    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1400&q=82',
+    image: images.structure2,
     caption: 'Precisão',
-    alt: 'Profissional inspecionando peças em ambiente de fábrica com controle técnico',
+    alt: 'Detalhes técnicos de produção em nossa fábrica para acabamentos precisos',
   },
   {
-    image: 'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=1400&q=82',
+    image: images.structure3,
     caption: 'Personalização',
-    alt: 'Detalhe de maquinário industrial usado para acabamentos precisos em perfis metálicos',
+    alt: 'Showroom e ambiente personalizado da Studio 7 Esquadrias',
   },
   {
-    image: images.partners,
+    image: images.structure4,
     caption: 'Qualidade',
-    alt: 'Área fabril ampla com estrutura produtiva preparada para qualidade em cada detalhe',
+    alt: 'Área produtiva ampla preparada para qualidade em cada detalhe',
   },
 ]
 
