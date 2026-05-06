@@ -4,9 +4,9 @@ import './App.css'
 const logo = '/logo_0.png'
 
 const contact = {
-  whatsappLabel: '+55 19 97102-1432',
+  whatsappLabel: '+55 19 97402-7431',
   whatsappUrl:
-    'https://wa.me/5519971021432?text=Ol%C3%A1%2C%20vim%20do%20site%20e%20quero%20falar%20sobre%20um%20projeto%20de%20esquadrias.',
+    'https://wa.me/5519974027431?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Studio%207%20e%20gostaria%20de%20um%20or%C3%A7amento.',
   email: 'contato@studio7esquadrias.com.br',
   emailUrl: 'mailto:contato@studio7esquadrias.com.br',
   instagramUrl: 'https://www.instagram.com/studio7esquadrias/',
@@ -700,14 +700,7 @@ function App() {
               </a>
             </div>
 
-            <div className="onde-proof">
-              <figure className="fachada-card">
-                <img
-                  src={images.locationFacade}
-                  alt="Fachada da fábrica Studio 7 Esquadrias em Campinas"
-                />
-              </figure>
-
+            <div className="onde-right">
               <div className="mapa-card" aria-label="Mapa da fábrica Studio 7 em Campinas">
                 <iframe
                   src="https://www.google.com/maps?q=Av.+Anton+Von+Zuben,+3145,+Jardim+São+José,+Campinas+-+SP,+13051-145&output=embed"
@@ -715,6 +708,13 @@ function App() {
                   title="Localização da Studio 7 Esquadrias"
                 ></iframe>
               </div>
+
+              <figure className="fachada-card">
+                <img
+                  src={images.locationFacade}
+                  alt="Fachada da fábrica Studio 7 Esquadrias em Campinas"
+                />
+              </figure>
             </div>
           </div>
         </section>
