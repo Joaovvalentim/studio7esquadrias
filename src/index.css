@@ -1,22 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  --bg: #091321;
-  --surface: #12233b;
-  --surface-soft: #1b3150;
+  --bg: #081321;
+  --surface: #10243d;
+  --surface-soft: #183557;
   --brand-light: #8bcdf6;
   --brand-mid: #5c95d7;
   --brand-deep: #dce9f7;
+  --text: #edf5ff;
   --text-strong: #edf5ff;
   --text-soft: #afc0d4;
+  --muted: #aebfd3;
+  --accent: #8bcdf6;
   --border: rgba(122, 174, 230, 0.16);
-  --font-body: 'Manrope', system-ui, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   font-family: var(--font-body);
-  line-height: 1.6;
+  line-height: 1.5;
   font-weight: 400;
-  color: var(--text-strong);
+  color: var(--text);
   background:
     radial-gradient(circle at top left, rgba(73, 124, 193, 0.18), transparent 22%),
     linear-gradient(180deg, rgba(9, 19, 33, 0.98), rgba(10, 21, 38, 1)),
@@ -33,11 +35,15 @@
 
 html {
   scroll-behavior: smooth;
+  background: var(--bg);
 }
 
 body {
   margin: 0;
   min-width: 320px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(73, 124, 193, 0.16), transparent 26rem),
+    linear-gradient(180deg, #081321 0%, #08111e 46%, #07101c 100%);
 }
 
 body::before {
@@ -52,42 +58,42 @@ body::before {
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 90%);
 }
 
+body,
+button,
+input,
+textarea {
+  font-family: var(--font-body);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+img {
+  display: block;
+}
+
 #root {
   width: 100%;
 }
 
-a,
-button,
-input,
-textarea,
-summary {
-  font: inherit;
+h1,
+h2,
+h3,
+p {
+  margin: 0;
 }
 
 h1,
 h2,
 h3 {
-  margin: 0;
-  font-family: var(--font-heading);
-  letter-spacing: -0.05em;
+  font-weight: 900;
+  letter-spacing: 0;
   line-height: 0.98;
-}
-
-h1 {
-  font-size: clamp(2.8rem, 5vw, 5.1rem);
-  max-width: 11ch;
-}
-
-h2 {
-  font-size: clamp(2rem, 4vw, 4rem);
-  color: var(--text-strong);
-  max-width: 16ch;
-}
-
-h3 {
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-}
-
-p {
-  margin: 0;
 }

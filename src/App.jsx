@@ -1,247 +1,248 @@
-import { useEffect, useState } from 'react'
-import logo from './assets/logo.png'
+﻿import { useEffect, useRef, useState } from 'react'
+import logo from './assets/logo1.png'
 import './App.css'
 
-const WHATSAPP_URL = 'https://wa.me/5519971021432'
+const contact = {
+  whatsappLabel: '+55 19 97102-1432',
+  whatsappUrl:
+    'https://wa.me/5519971021432?text=Ol%C3%A1%2C%20vim%20do%20site%20e%20quero%20falar%20sobre%20um%20projeto%20de%20esquadrias.',
+  email: 'contato@studio7esquadrias.com.br',
+  location: 'Campinas/SP',
+}
 
-const heroSlides = [
-  {
-    image:
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=80',
-    label: 'Residencial contemporâneo',
-    title: 'Grandes vãos, luz natural e acabamento com leitura arquitetônica limpa.',
-    text: 'Esquadrias de alumínio para projetos que valorizam integração visual, conforto e presença.',
-    meta: 'Estética, desempenho e proporção',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1600047509782-20d39509f26d?auto=format&fit=crop&w=1800&q=80',
-    label: 'Integração de ambientes',
-    title: 'Aberturas amplas para valorizar paisagem, proporção e continuidade visual.',
-    text: 'Soluções que reforçam a arquitetura do projeto com mais luz, leveza e sofisticação.',
-    meta: 'Projetos de alto padrão',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1800&q=80',
-    label: 'Fachadas e detalhes',
-    title: 'Linhas limpas e encontros precisos para obras que pedem acabamento superior.',
-    text: 'Mais elegância visual, presença contemporânea e percepção de valor em cada detalhe.',
-    meta: 'Precisão e acabamento',
-  },
-]
+const images = {
+  hero:
+    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2200&q=85',
+  factory:
+    'https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=1200&q=80',
+  showroom:
+    'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=80',
+  support:
+    'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80',
+  installation:
+    'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80',
+  projectA:
+    'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80',
+  projectB:
+    'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1400&q=80',
+  projectC:
+    'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=80',
+  partners:
+    'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=1600&q=80',
+}
 
-const authorityCards = [
-  {
-    title: 'Mais impacto na leitura do projeto',
-    text: 'Esquadrias que valorizam fachadas, ampliam a entrada de luz e reforçam a elegância da arquitetura.',
-  },
-  {
-    title: 'Desempenho com acabamento preciso',
-    text: 'Soluções pensadas para unir vedação, funcionamento consistente e percepção real de qualidade.',
-  },
-  {
-    title: 'Integração entre estética e técnica',
-    text: 'Cada composição é direcionada para responder ao uso do ambiente sem perder proporção e presença visual.',
-  },
+const navItems = [
+  { id: 'principal', label: 'Principal' },
+  { id: 'diferenciais', label: 'Diferenciais' },
+  { id: 'estrutura', label: 'Estrutura' },
+  { id: 'funciona', label: 'Como funciona' },
+  { id: 'beneficios', label: 'Benefícios' },
+  { id: 'projetos', label: 'Projetos' },
+  { id: 'serralheiros', label: 'Parceiros' },
+  { id: 'onde-estamos', label: 'Onde estamos' },
+  { id: 'contato', label: 'Fale conosco' },
 ]
 
 const differentiators = [
   {
-    number: '01',
-    icon: 'architecture',
-    title: 'Estética alinhada à arquitetura',
-    text: 'Perfis, modulações e composições desenvolvidos para criar fachadas mais limpas, elegantes e coerentes com o conceito arquitetônico.',
+    image: images.factory,
+    title: 'Fábrica com equipamento de ponta',
+    items: ['Suporte técnico', 'Produção inteligente e eficiente'],
   },
   {
-    number: '02',
-    icon: 'precision',
-    title: 'Precisão técnica e desempenho',
-    text: 'Soluções projetadas para garantir leitura visual superior, funcionamento consistente, vedação eficiente e qualidade percebida em cada detalhe.',
+    image: images.showroom,
+    title: 'Showroom e atendimento consultivo',
+    items: ['Projetos diversos e personalizados', 'Acompanhamento próximo'],
   },
   {
-    number: '03',
-    icon: 'customization',
-    title: 'Personalização sob medida',
-    text: 'Cada projeto é direcionado conforme tipologia, abertura, proporção, contexto estético e necessidade real de uso da obra.',
+    image: images.support,
+    title: 'Atendimento personalizado',
+    items: ['Cada cliente escolhe seu tipo de atendimento', 'Adequação para cada obra'],
   },
   {
-    number: '04',
-    icon: 'corporate',
-    title: 'Valor para clientes corporativos',
-    text: 'Uma apresentação técnica e comercial mais sólida para construtoras, incorporadoras e empresas que precisam transmitir confiança e alto padrão.',
-    featured: true,
+    image: images.installation,
+    title: 'Instalação com parceiros capacitados',
+    items: ['Listas exclusivas', 'Parceiros qualificados'],
   },
 ]
 
-const projectShowcase = [
+const structureItems = [
   {
-    image:
-      'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1600&q=80',
-    title: 'Fachadas com leitura contemporânea',
-    text: 'Planos mais limpos, esquadrias proporcionais e presença visual à altura do projeto.',
+    image: images.factory,
+    caption: 'Linha de produção estruturada',
+    alt: 'Linha de produção industrial com equipamentos e bancadas de trabalho organizadas',
   },
   {
-    image:
-      'https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=1600&q=80',
-    title: 'Ambientes integrados',
-    text: 'Mais luz, amplitude e transição entre interior e exterior com sofisticação.',
+    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1400&q=82',
+    caption: 'Controle de qualidade em cada etapa',
+    alt: 'Profissional inspecionando peças em ambiente de fábrica com controle técnico',
   },
   {
-    image:
-      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=80',
-    title: 'Projetos especiais sob medida',
-    text: 'Soluções para obras que pedem diferenciação estética e clareza técnica na execução.',
-  },
-]
-
-const whyChoose = [
-  {
-    number: '01',
-    title: 'Valorização do projeto',
-    text: 'Seu empreendimento ganha percepção de alto padrão desde a apresentação até a execução.',
+    image: 'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=1400&q=82',
+    caption: 'Precisão nos acabamentos',
+    alt: 'Detalhe de maquinário industrial usado para acabamentos precisos em perfis metálicos',
   },
   {
-    number: '02',
-    title: 'Segurança técnica',
-    text: 'Soluções pensadas para vedação eficiente, durabilidade e funcionamento consistente.',
-  },
-  {
-    number: '03',
-    title: 'Clareza comercial',
-    text: 'Facilitamos a decisão de clientes, investidores e especificadores.',
-  },
-  {
-    number: '04',
-    title: 'Execução confiável',
-    text: 'Do conceito à entrega, cada etapa é planejada para funcionar com precisão.',
+    image: images.partners,
+    caption: 'Infraestrutura própria para alto padrão',
+    alt: 'Área fabril ampla com estrutura produtiva preparada para projetos de alto padrão',
   },
 ]
 
-const processSteps = [
+const processJourney = [
   {
-    step: '01',
-    title: 'Entendimento da demanda',
-    text: 'Recebemos o contexto da obra, perfil do projeto e necessidade comercial para direcionar a solução.',
-    image:
-      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80',
+    icon: 'phone',
+    title: 'Cliente entra em contato',
+    text: 'Entendemos sua necessidade e coletamos as informações iniciais.',
   },
   {
-    step: '02',
-    title: 'Leitura técnica e proposta',
-    text: 'Organizamos as informações com foco em tipologia, estética, abertura, desempenho e apresentação.',
-    image:
-      'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80',
+    icon: 'analysis',
+    title: 'Análise técnica',
+    text: 'Avaliamos medidas, ambiente e viabilidade do projeto.',
   },
   {
-    step: '03',
-    title: 'Atendimento e continuidade',
-    text: 'O contato avança com mais clareza, confiança e alinhamento entre expectativa e proposta.',
-    image:
-      'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1200&q=80',
-  },
-]
-
-const testimonials = [
-  {
-    image: 'https://randomuser.me/api/portraits/women/68.jpg',
-    quote:
-      'Atendimento claro, ótima leitura do projeto e uma apresentação muito alinhada ao padrão que precisávamos entregar ao cliente final.',
-    name: 'Mariana Costa',
-    role: 'Coordenadora comercial',
-    stars: 5,
+    icon: 'measure',
+    title: 'Adequação do projeto',
+    text: 'Ajustamos o projeto conforme a necessidade da obra.',
   },
   {
-    image: 'https://randomuser.me/api/portraits/men/32.jpg',
-    quote:
-      'A percepção de valor sobe quando a solução combina estética, proporção e segurança técnica. O material transmite exatamente isso.',
-    name: 'Ricardo Almeida',
-    role: 'Gestor de obras',
-    stars: 5,
+    icon: 'logistics',
+    title: 'Detalhes e logística',
+    text: 'Alinhamos prazos, materiais e logística de entrega.',
   },
   {
-    image: 'https://randomuser.me/api/portraits/women/44.jpg',
-    quote:
-      'Gostei da forma como os diferenciais foram apresentados. A comunicação ficou sofisticada, objetiva e muito mais confiável.',
-    name: 'Patrícia Nogueira',
-    role: 'Diretora de atendimento',
-    stars: 5,
+    icon: 'factory',
+    title: 'Produção',
+    text: 'A fabricação segue controle, precisão e padrão de qualidade.',
+  },
+  {
+    icon: 'delivery',
+    title: 'Entrega final',
+    text: 'O produto chega pronto para valorizar o empreendimento.',
   },
 ]
 
-const faqItems = [
-  {
-    question: 'A Studio 7 atende apenas Campinas e região?',
-    answer:
-      'Campinas/SP é a base de atuação da marca, mas este texto pode ser ajustado conforme a área real de atendimento da empresa.',
-  },
-  {
-    question: 'Quais tipos de projeto combinam com a proposta da marca?',
-    answer:
-      'Projetos corporativos, residenciais sofisticados, fachadas, grandes aberturas e demandas que valorizam estética, acabamento e leitura técnica.',
-  },
-  {
-    question: 'Posso solicitar atendimento direto pelo WhatsApp?',
-    answer:
-      'Sim. O principal objetivo da landing é levar o visitante para uma conversa direta, rápida e objetiva pelo WhatsApp.',
-  },
-  {
-    question: 'Os textos e imagens podem ser personalizados depois?',
-    answer:
-      'Sim. A estrutura foi organizada para facilitar a troca de imagens, títulos, depoimentos, FAQ e links sem retrabalho grande.',
-  },
+const benefits = [
+  'Atendimento exclusivo',
+  'Orçamento correto',
+  'Contrato e faturamento direto',
+  'Suporte na compra de materiais',
+  'Apoio direto ao cliente',
+  'Infraestrutura personalizada',
 ]
 
-const stats = [
-  { value: 'Alto padrão', label: 'Estética e acabamento' },
-  { value: 'Campinas/SP', label: 'Atendimento direto' },
-  { value: 'Alumínio', label: 'Precisão e desempenho' },
+const projectLines = [
+  { title: 'Linhas econômicas e cotidianas', text: 'Soluções objetivas para obras com bom custo e execução clara.' },
+  { title: 'Linhas robustas e pesadas', text: 'Perfis mais fortes para projetos que exigem presença e desempenho.' },
+  { title: 'Linhas premium e vãos maiores', text: 'Acabamento superior, leitura arquitetônica e diferenciação visual.' },
+  { title: 'Linhas modernas e minimalistas', text: 'Opções como chumbada, aura e outras linhas de aparência limpa.' },
+  { title: 'Linhas personalizadas', text: 'Soluções sob medida para necessidades específicas da obra.' },
 ]
 
-const navItems = [
-  { id: 'sobre', label: 'Sobre' },
-  { id: 'diferenciais', label: 'Diferenciais' },
-  { id: 'aplicacoes', label: 'Aplicações' },
-  { id: 'processo', label: 'Processo' },
-  { id: 'faq', label: 'FAQ' },
-  { id: 'contato', label: 'Contato' },
-]
+function ProcessIcon({ type }) {
+  const icons = {
+    phone: (
+      <>
+        <path d="M9.2 5.4 7.4 7.2c-.5.5-.6 1.2-.3 1.8a18.6 18.6 0 0 0 7.9 7.9c.6.3 1.3.2 1.8-.3l1.8-1.8c.4-.4.4-1 0-1.4l-2.1-2.1c-.4-.4-1-.4-1.4 0l-.8.8a11.5 11.5 0 0 1-4.4-4.4l.8-.8c.4-.4.4-1 0-1.4L10.6 5.4c-.4-.4-1-.4-1.4 0Z" />
+        <path d="M15 5.2c2.1.5 3.6 2 4.1 4.1" />
+      </>
+    ),
+    analysis: (
+      <>
+        <circle cx="10.2" cy="10.2" r="4.7" />
+        <path d="m13.7 13.7 4.8 4.8" />
+        <path d="M8.2 10.2h4" />
+        <path d="M10.2 8.2v4" />
+      </>
+    ),
+    measure: (
+      <>
+        <path d="M6 18 18 6" />
+        <path d="M8 20 4 16 16 4l4 4L8 20Z" />
+        <path d="m13 7 4 4" />
+        <path d="m10.5 9.5 2 2" />
+      </>
+    ),
+    logistics: (
+      <>
+        <path d="M4 7h9v8H4z" />
+        <path d="M13 10h3.2l2.8 2.8V15h-6z" />
+        <circle cx="7" cy="17" r="1.5" />
+        <circle cx="16" cy="17" r="1.5" />
+        <path d="M6 5h5" />
+      </>
+    ),
+    factory: (
+      <>
+        <path d="M4 19V9l5 3V9l5 3V7h4v12H4Z" />
+        <path d="M7 16h2" />
+        <path d="M12 16h2" />
+        <path d="M16 16h2" />
+      </>
+    ),
+    delivery: (
+      <>
+        <path d="M4 11.2 12 5l8 6.2" />
+        <path d="M6.5 10.5V19h11v-8.5" />
+        <path d="m9 14.4 2.1 2.1 4.1-4.4" />
+      </>
+    ),
+  }
 
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      {icons[type]}
+    </svg>
+  )
+}
 function App() {
   const [isTopbarSolid, setIsTopbarSolid] = useState(false)
-  const [activeSection, setActiveSection] = useState('sobre')
-  const [activeHeroSlide, setActiveHeroSlide] = useState(0)
-  const [previousHeroSlide, setPreviousHeroSlide] = useState(null)
+  const [activeSection, setActiveSection] = useState(navItems[0].id)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [openFaqIndex, setOpenFaqIndex] = useState(0)
+  const structureViewportRef = useRef(null)
 
-  useEffect(() => {
-    const items = document.querySelectorAll('[data-reveal]')
+  const moveStructureCarousel = (direction) => {
+    const viewport = structureViewportRef.current
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      {
-        threshold: 0.08,
-        rootMargin: '0px 0px -4% 0px',
-      },
-    )
+    if (!viewport) return
 
-    items.forEach((item) => observer.observe(item))
+    const firstSlide = viewport.querySelector('.structure-slide')
+    const track = viewport.querySelector('.structure-track')
+    const trackStyles = track ? window.getComputedStyle(track) : null
+    const gap = Number.parseFloat(trackStyles?.columnGap || trackStyles?.gap) || 0
+    const slideDistance = firstSlide ? firstSlide.getBoundingClientRect().width + gap : viewport.clientWidth * 0.35
+    const halfScrollWidth = viewport.scrollWidth / 2
 
-    return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsTopbarSolid(window.scrollY > 28)
+    if (halfScrollWidth > 0 && viewport.scrollLeft >= halfScrollWidth) {
+      viewport.scrollLeft -= halfScrollWidth
     }
+
+    if (direction < 0 && viewport.scrollLeft <= slideDistance) {
+      viewport.scrollLeft += halfScrollWidth
+    }
+
+    viewport.scrollBy({
+      left: direction * slideDistance,
+      behavior: 'smooth',
+    })
+  }
+
+  const normalizeStructureCarousel = () => {
+    const viewport = structureViewportRef.current
+
+    if (!viewport) return
+
+    const halfScrollWidth = viewport.scrollWidth / 2
+
+    if (halfScrollWidth <= 0) return
+
+    if (viewport.scrollLeft >= halfScrollWidth) {
+      viewport.scrollLeft -= halfScrollWidth
+    }
+  }
+
+  useEffect(() => {
+    const handleScroll = () => setIsTopbarSolid(window.scrollY > 24)
 
     handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -263,8 +264,8 @@ function App() {
         }
       },
       {
-        threshold: [0.2, 0.4, 0.6],
-        rootMargin: '-20% 0px -55% 0px',
+        threshold: [0.22, 0.42, 0.62],
+        rootMargin: '-18% 0px -56% 0px',
       },
     )
 
@@ -274,35 +275,6 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-
-    if (mediaQuery.matches) {
-      return undefined
-    }
-
-    const interval = window.setInterval(() => {
-      setActiveHeroSlide((current) => {
-        setPreviousHeroSlide(current)
-        return (current + 1) % heroSlides.length
-      })
-    }, 5200)
-
-    return () => window.clearInterval(interval)
-  }, [])
-
-  useEffect(() => {
-    if (previousHeroSlide === null) {
-      return undefined
-    }
-
-    const timeout = window.setTimeout(() => {
-      setPreviousHeroSlide(null)
-    }, 1600)
-
-    return () => window.clearTimeout(timeout)
-  }, [previousHeroSlide])
-
-  useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? 'hidden' : ''
 
     return () => {
@@ -310,22 +282,24 @@ function App() {
     }
   }, [isMobileMenuOpen])
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 820) {
-        setIsMobileMenuOpen(false)
-      }
-    }
+  const handleContactSubmit = (event) => {
+    event.preventDefault()
 
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    const formData = new FormData(event.currentTarget)
+    const name = formData.get('name') || 'Visitante'
+    const phone = formData.get('phone') || 'não informado'
+    const project = formData.get('project') || 'projeto de esquadrias'
+    const message = `Olá, sou ${name}. Meu WhatsApp é ${phone}. Quero falar sobre: ${project}.`
+
+    window.open(`https://wa.me/5519971021432?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
+    event.currentTarget.reset()
+  }
 
   return (
-    <div className="page-shell">
-      <header className={`topbar ${isTopbarSolid ? 'topbar-solid' : ''} ${isMobileMenuOpen ? 'topbar-open' : ''}`}>
+    <div className="site-shell">
+      <header className={`topbar ${isTopbarSolid ? 'is-solid' : ''}`}>
         <div className="topbar-inner">
-          <a className="brand" href="#top" aria-label="Studio 7 Esquadrias">
+          <a className="brand" href="#principal" aria-label="Ir para o início">
             <img className="brand-logo" src={logo} alt="Studio 7 Esquadrias" />
             <div className="brand-copy">
               <strong>Studio 7</strong>
@@ -334,7 +308,7 @@ function App() {
           </a>
 
           <button
-            aria-controls="mobile-nav"
+            aria-controls="site-nav"
             aria-expanded={isMobileMenuOpen}
             aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
             className={`menu-toggle ${isMobileMenuOpen ? 'is-open' : ''}`}
@@ -346,406 +320,266 @@ function App() {
             <span></span>
           </button>
 
-          <nav className="nav nav-desktop" aria-label="Navegação principal">
+          <nav className={`nav-pill ${isMobileMenuOpen ? 'is-open' : ''}`} id="site-nav" aria-label="Navegação principal">
             {navItems.map((item) => (
               <a
                 className={activeSection === item.id ? 'is-active' : ''}
                 href={`#${item.id}`}
                 key={item.id}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.label}
               </a>
             ))}
           </nav>
 
-          <a className="nav-cta" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-            Falar no WhatsApp
-          </a>
-        </div>
-
-        <div className={`mobile-nav-shell ${isMobileMenuOpen ? 'is-open' : ''}`}>
-          <div className="mobile-nav-backdrop" onClick={() => setIsMobileMenuOpen(false)}></div>
-
-          <div className="mobile-nav-panel" id="mobile-nav">
-            <nav className="mobile-nav" aria-label="Navegação mobile">
-              {navItems.map((item) => (
-                <a
-                  className={activeSection === item.id ? 'is-active' : ''}
-                  href={`#${item.id}`}
-                  key={item.id}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.label}
-                </a>
-              ))}
-            </nav>
-
-            <a
-              className="mobile-nav-cta"
-              href={WHATSAPP_URL}
-              onClick={() => setIsMobileMenuOpen(false)}
-              rel="noreferrer"
-              target="_blank"
-            >
-              Falar no WhatsApp
-            </a>
-          </div>
         </div>
       </header>
 
-      <main id="top">
-        <div className="page-container">
-          <section className="hero" data-section id="hero">
-            <div className="hero-copy">
-              <p className="eyebrow" data-reveal="up">
-                Studio 7 Esquadrias . Campinas/SP
-              </p>
-              <h1 data-reveal="up">Esquadrias de alumínio para projetos de alto padrão.</h1>
-              <p className="hero-text" data-reveal="up">
-                Soluções para fachadas, grandes aberturas e ambientes integrados, com acabamento
-                premium, desempenho técnico e integração arquitetônica.
-              </p>
+      <main>
+        <section className="hero-section" data-section id="principal">
+          <img className="hero-bg" src={images.hero} alt="" />
+          <div className="hero-scrim"></div>
 
-              <div className="hero-actions" data-reveal="up">
-                <a className="primary-cta hero-primary-cta" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-                  Falar no WhatsApp
-                </a>
-                <a className="secondary-cta" href="#aplicacoes">
-                  Ver projetos
-                </a>
-              </div>
+          <div className="page-container hero-content">
+            <p className="section-kicker">Studio 7 Esquadrias</p>
+            <h1>Soluções sob medida em esquadrias</h1>
+            <p className="hero-text">
+              Onde seu projeto é executado com respeito, qualidade e preço justo. A Studio 7 entrega
+              soluções em alumínio para transformar o sonho da obra em uma execução clara e confiável.
+            </p>
 
-              <p className="hero-proof" data-reveal="up">
-                Atendimento direto para alinhar a demanda e avançar com clareza comercial.
-              </p>
+            <div className="hero-actions">
+              <a className="primary-button" href={contact.whatsappUrl} target="_blank" rel="noreferrer">
+                Saiba mais
+              </a>
+              <a className="ghost-button" href="#diferenciais">
+                Ver diferenciais
+              </a>
+            </div>
+          </div>
+        </section>
 
-              <div className="hero-stats" data-reveal="up">
-                {stats.map((item) => (
-                  <article className="hero-stat" key={item.label}>
-                    <strong>{item.value}</strong>
-                    <span>{item.label}</span>
-                  </article>
-                ))}
-              </div>
+        <section className="intro-band" data-section id="diferenciais">
+          <div className="page-container">
+            <h2>Nossos Diferenciais</h2>
+
+            <div className="differentials-grid">
+              {differentiators.map((item) => (
+                <article className="image-card" key={item.title}>
+                  <img src={item.image} alt="" />
+                  <div>
+                    <h3>{item.title}</h3>
+                    <ul>
+                      {item.items.map((detail) => (
+                        <li key={detail}>{detail}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              ))}
             </div>
 
-            <div className="hero-visual" aria-hidden="true" data-reveal="right">
-              <div className="hero-image-wrap">
-                <div className="hero-image-stage">
-                  {heroSlides.map((slide, index) => {
-                    const isActive = index === activeHeroSlide
-                    const isPrevious = index === previousHeroSlide
+            <div className="center-action">
+              <a className="small-pill" href={contact.whatsappUrl} target="_blank" rel="noreferrer">
+                Saiba mais!
+              </a>
+            </div>
+          </div>
+        </section>
 
-                    return (
-                      <div
-                        className={`hero-slide ${isActive ? 'is-active' : ''} ${isPrevious ? 'is-previous' : ''}`}
-                        key={slide.image}
-                      >
-                        <img className="hero-image" src={slide.image} alt="" />
-                      </div>
-                    )
-                  })}
-                  <div className="hero-image-grid"></div>
-                  <div className="hero-image-glow"></div>
-                </div>
+        <section className="delivery-section" data-section id="estrutura">
+          <div className="page-container structure-layout">
+            <div className="structure-heading">
+              <p className="section-kicker">Nossa Estrutura</p>
+              <h2>Controle, precisão e qualidade em cada detalhe.</h2>
+            </div>
 
-                <div className="hero-image-fade"></div>
-
-                <div className="panel-caption">
-                  <span>{heroSlides[activeHeroSlide].label}</span>
-                  <strong>{heroSlides[activeHeroSlide].title}</strong>
-                  <p>{heroSlides[activeHeroSlide].text}</p>
-                  <small>{heroSlides[activeHeroSlide].meta}</small>
-                </div>
-
-                <div className="hero-progress" aria-hidden="true">
-                  {heroSlides.map((slide, index) => (
-                    <span
-                      className={`hero-progress-dot ${index === activeHeroSlide ? 'is-active' : ''}`}
-                      key={slide.image}
-                    ></span>
+            <div className="structure-carousel" aria-label="Fotos da estrutura da fábrica Studio 7">
+              <div className="structure-viewport" ref={structureViewportRef} onScroll={normalizeStructureCarousel}>
+                <div className="structure-track">
+                  {[0, 1].map((setIndex) => (
+                    <div className="structure-sequence" aria-hidden={setIndex === 1 ? 'true' : undefined} key={setIndex}>
+                      {structureItems.map((item) => (
+                        <figure className="structure-slide" key={`${setIndex}-${item.caption}`}>
+                          <img src={item.image} alt={setIndex === 0 ? item.alt : ''} draggable="false" />
+                          <figcaption>{item.caption}</figcaption>
+                        </figure>
+                      ))}
+                    </div>
                   ))}
                 </div>
               </div>
 
-              <div className="panel-caption panel-caption-mobile">
-                <span>{heroSlides[activeHeroSlide].label}</span>
-                <strong>{heroSlides[activeHeroSlide].title}</strong>
-                <p>{heroSlides[activeHeroSlide].text}</p>
-                <small>{heroSlides[activeHeroSlide].meta}</small>
+              <div className="structure-controls">
+                <button
+                  className="carousel-arrow prev"
+                  type="button"
+                  aria-label="Ver foto anterior da estrutura"
+                  onClick={() => moveStructureCarousel(-1)}
+                >
+                  <span aria-hidden="true">←</span>
+                </button>
+                <button
+                  className="carousel-arrow next"
+                  type="button"
+                  aria-label="Ver próxima foto da estrutura"
+                  onClick={() => moveStructureCarousel(1)}
+                >
+                  <span aria-hidden="true">→</span>
+                </button>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="authority-section" data-section id="sobre">
-            <div className="authority-intro">
-              <div className="authority-copy section-head-clear" data-reveal="up">
-                <p className="eyebrow">Posicionamento</p>
-                <h2>Esquadrias que elevam a arquitetura e reforçam o valor percebido do projeto.</h2>
-                <p>
-                  Soluções em alumínio para obras que pedem linhas limpas, acabamento superior,
-                  desempenho técnico e integração visual com a proposta arquitetônica.
-                </p>
-              </div>
+        <section className="process-section" data-section id="funciona">
+          <div className="page-container">
+            <p className="section-kicker">COMO FUNCIONA</p>
+            <h2>Do primeiro contato à entrega, cada etapa segue um processo claro.</h2>
+            <p className="section-lead">Uma jornada guiada para transformar necessidade, projeto e logística em esquadrias prontas para a obra.</p>
 
-              <div className="authority-aside" aria-hidden="true" data-reveal="right">
-                <div className="authority-aside-panel">
-                  <span className="authority-aside-label">Arquitetura contemporânea</span>
-                  <strong>Estética, precisão e presença visual em equilíbrio.</strong>
-                  <p>
-                    Soluções que respondem à proposta do projeto com linhas limpas, proporção bem
-                    resolvida e desempenho técnico percebido no uso.
-                  </p>
-                </div>
-              </div>
+            <div className="process-map" aria-label="Jornada do cliente Studio 7">
+              {processJourney.map((step, index) => (
+                <article className="process-step" key={step.title} style={{ '--step-index': index }}>
+                  <div className="process-node" aria-hidden="true">
+                    <ProcessIcon type={step.icon} />
+                  </div>
+                  <div className="process-card">
+                    <div className="process-card-head">
+                      <span>Etapa {index + 1}</span>
+                    </div>
+                    <strong>{step.title}</strong>
+                    <p>{step.text}</p>
+                  </div>
+                </article>
+              ))}
             </div>
 
-            <div className="authority-grid">
-              {authorityCards.map((item) => (
-                <article className="authority-card" data-reveal="up" key={item.title}>
+            <div className="center-action">
+              <a className="small-pill" href={contact.whatsappUrl} target="_blank" rel="noreferrer">
+                Saiba mais!
+              </a>
+            </div>
+          </div>
+        </section>
+        <section className="benefits-section" data-section id="beneficios">
+          <div className="page-container benefits-panel">
+            <div>
+              <p className="section-kicker">Benefícios</p>
+              <h2>Produtividade e qualidade</h2>
+              <p>Você recebe peças prontas e com acabamento superior.</p>
+            </div>
+
+            <div className="benefit-tags">
+              {benefits.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="projects-section" data-section id="projetos">
+          <div className="page-container">
+            <h2>Projetos Studio 7</h2>
+            <p className="section-lead">Linhas e soluções para obras residenciais, corporativas e serralherias parceiras.</p>
+
+            <div className="projects-layout">
+              <article className="project-photo large">
+                <img src={images.projectA} alt="" />
+              </article>
+              <article className="project-photo">
+                <img src={images.projectB} alt="" />
+              </article>
+              <article className="project-photo">
+                <img src={images.projectC} alt="" />
+              </article>
+            </div>
+
+            <div className="line-list">
+              {projectLines.map((item) => (
+                <article key={item.title}>
                   <h3>{item.title}</h3>
                   <p>{item.text}</p>
                 </article>
               ))}
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="section-panel differentiators-section" data-section id="diferenciais">
-            <div className="differentiators-layout">
-              <div className="section-head section-head-clear differentiators-head" data-reveal="left">
-                <p className="eyebrow">Diferenciais</p>
-                <h2>
-                  Esquadrias que unem
-                  <br />
-                  design sofisticado, precisão técnica
-                  <br />
-                  e valorização do projeto
-                </h2>
-                <p>
-                  Desenvolvemos soluções sob medida que combinam estética, desempenho e apresentação
-                  comercial para projetos de alto padrão.
-                </p>
+        <section className="partners-section" data-section id="serralheiros">
+          <img src={images.partners} alt="" />
+          <div className="partners-overlay"></div>
+          <div className="page-container partners-content">
+            <p className="section-kicker">Parceiros Serralheiros</p>
+            <h2>Fabricamos para quem precisa de campo fabril e prazo previsível.</h2>
+            <p>
+              Executamos a fabricação das obras de sua serralheria, ajudando empresas que não possuem
+              estrutura fabril ou que estão acima da capacidade produtiva.
+            </p>
+            <a className="primary-button" href={contact.whatsappUrl} target="_blank" rel="noreferrer">
+              Falar com a Studio 7
+            </a>
+          </div>
+        </section>
 
-                <div className="differentiators-actions">
-                  <a className="primary-cta differentiators-primary" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-                    Solicitar orçamento
-                  </a>
-                  <a className="secondary-cta differentiators-secondary" href="#contato">
-                    Falar com especialista
-                  </a>
-                </div>
-
-                <p className="differentiators-proof">
-                  +150 projetos entregues para clientes de alto padrão em todo o Brasil
-                </p>
-              </div>
-
-              <div className="differentiators-composition">
-                {differentiators.map((item, index) => (
-                  <article
-                    className={`differential-card differential-card-${item.number} ${item.featured ? 'differential-card-featured' : ''}`}
-                    data-reveal={index === 0 ? 'right' : 'up'}
-                    key={item.title}
-                  >
-                    <span className={`differential-icon differential-icon-${item.icon}`} aria-hidden="true">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </span>
-                    <span className="card-kicker">{item.number}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <section className="section-panel applications-section" data-section id="aplicacoes">
-            <div className="section-head section-head-clear" data-reveal="up">
-              <p className="eyebrow">Aplicações</p>
-              <h2>Imagens grandes, arquitetura contemporânea e composições que vendem atmosfera.</h2>
+        <section className="location-section" data-section id="onde-estamos">
+          <div className="page-container split-section">
+            <div>
+              <p className="section-kicker">Onde Estamos</p>
+              <h2>Atendimento na região de Campinas e alinhamento direto pelo WhatsApp.</h2>
             </div>
 
-            <div className="projects-grid">
-              {projectShowcase.map((item, index) => (
-                <article
-                  className={`project-card ${index === 0 ? 'project-card-featured' : ''}`}
-                  data-reveal={index % 2 === 0 ? 'left' : 'right'}
-                  key={item.title}
-                >
-                  <img src={item.image} alt="" />
-                  <div className="project-card-overlay">
-                    <span>{index === 0 ? 'Projeto editorial' : 'Aplicação'}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="section-panel reasons-section">
-            <div className="reasons-copy section-head-clear" data-reveal="left">
-              <p className="eyebrow">Por que escolher</p>
-              <h2>Decisões técnicas, estéticas e comerciais no mesmo nível de exigência</h2>
-              <p>
-                Cada projeto é desenvolvido para valorizar o empreendimento, garantir desempenho
-                técnico e facilitar a tomada de decisão de quem está investindo.
-              </p>
-            </div>
-
-            <div className="reasons-list" data-reveal="right">
-              {whyChoose.map((item) => (
-                <div className="reason-list-item" key={item.title}>
-                  <span className="reason-list-number">{item.number}</span>
-                  <div className="reason-list-content">
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="section-panel process-section" data-section id="processo">
-            <div className="process-layout">
-              <div className="section-head section-head-clear process-head" data-reveal="left">
-                <p className="eyebrow">Processo</p>
-                <h2>Um caminho simples, elegante e claro até o contato comercial.</h2>
-              </div>
-
-              <div className="process-flow">
-                {processSteps.map((item, index) => (
-                  <article className="process-step" data-reveal={index === 0 ? 'right' : 'up'} key={item.step}>
-                    <span className="process-step-number">{item.step}</span>
-                    <div className="process-step-content">
-                      <h3>{item.title}</h3>
-                      <p>{item.text}</p>
-                    </div>
-                    <div className="process-step-image-wrap" aria-hidden="true">
-                      <img className="process-step-image" src={item.image} alt="" />
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <section className="section-panel testimonials-section">
-            <div className="testimonials-layout">
-              <div className="section-head section-head-clear testimonials-head" data-reveal="left">
-                <p className="eyebrow">Prova social</p>
-                <h2>Confiança construída em cada projeto</h2>
-                <p>
-                  Depoimentos que reforçam a clareza comercial, o cuidado técnico e a percepção de
-                  alto padrão em cada etapa da experiência.
-                </p>
-              </div>
-
-              <div className="testimonials-list">
-                {testimonials.map((item, index) => (
-                  <article className="testimonial-item" data-reveal={index === 0 ? 'right' : 'up'} key={item.name + item.role}>
-                    <div className="testimonial-stars" aria-label={`${item.stars} de 5 estrelas`}>
-                      {'★'.repeat(item.stars)}
-                    </div>
-                    <p className="testimonial-quote">“{item.quote}”</p>
-                    <div className="testimonial-author">
-                      <img className="testimonial-avatar" src={item.image} alt={item.name} />
-                      <div className="testimonial-meta">
-                        <strong>{item.name}</strong>
-                        <span>{item.role}</span>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <section className="section-panel faq-section" data-section id="faq">
-            <div className="faq-layout">
-              <div className="section-head section-head-clear faq-head" data-reveal="left">
-                <p className="eyebrow">FAQ</p>
-                <h2>Dúvidas comuns antes de solicitar atendimento.</h2>
-                <p>
-                  Respostas rápidas para facilitar a leitura, reduzir objeções e conduzir o contato
-                  comercial com mais clareza.
-                </p>
-              </div>
-
-              <div className="faq-content" data-reveal="right">
-                <div className="faq-list">
-                  {faqItems.map((item, index) => {
-                    const isOpen = openFaqIndex === index
-
-                    return (
-                      <article className={`faq-item ${isOpen ? 'is-open' : ''}`} key={item.question}>
-                        <button
-                          className="faq-trigger"
-                          onClick={() => setOpenFaqIndex(isOpen ? -1 : index)}
-                          type="button"
-                        >
-                          <span className="faq-question">{item.question}</span>
-                          <span className="faq-icon" aria-hidden="true"></span>
-                        </button>
-                        <div className={`faq-answer-wrap ${isOpen ? 'is-open' : ''}`}>
-                          <p className="faq-answer">{item.answer}</p>
-                        </div>
-                      </article>
-                    )
-                  })}
-                </div>
-
-                <div className="faq-cta">
-                  <p>Não encontrou sua dúvida?</p>
-                  <a className="primary-cta faq-cta-button" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-                    Falar no WhatsApp
-                  </a>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="section-panel final-cta" data-section id="contato">
-            <div className="final-cta-copy section-head-clear" data-reveal="left">
-              <p className="eyebrow">Contato</p>
-              <h2>Se o projeto precisa transmitir mais valor, o próximo passo é iniciar a conversa</h2>
-              <p>
-                Atendimento direto para entender o contexto, alinhar a abordagem comercial e
-                encaminhar a solução mais adequada para o projeto.
-              </p>
-            </div>
-
-            <div className="final-cta-panel" data-reveal="right">
-              <span>Canal principal de contato</span>
-              <strong>Falar no WhatsApp</strong>
-              <p>Atendimento direto para alinhamento comercial, entendimento do projeto e solicitação de orçamento.</p>
-              <a className="primary-cta final-cta-button" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-                Solicitar orçamento
+            <div className="contact-strip">
+              <a href={contact.whatsappUrl} target="_blank" rel="noreferrer">
+                {contact.whatsappLabel}
               </a>
+              <a href={`mailto:${contact.email}`}>{contact.email}</a>
+              <span>{contact.location}</span>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
+
+        <section className="contact-section" data-section id="contato">
+          <div className="page-container contact-layout">
+            <div>
+              <p className="section-kicker">Fale Conosco</p>
+              <h2>Envie o contexto da sua obra e seguimos a conversa pelo WhatsApp.</h2>
+            </div>
+
+            <form className="contact-form" onSubmit={handleContactSubmit}>
+              <label>
+                Nome
+                <input name="name" placeholder="Seu nome" required />
+              </label>
+              <label>
+                WhatsApp
+                <input name="phone" placeholder="Seu telefone" required />
+              </label>
+              <label>
+                Projeto
+                <textarea name="project" placeholder="Conte rapidamente o que você precisa" rows="4"></textarea>
+              </label>
+              <button type="submit">Enviar pelo WhatsApp</button>
+            </form>
+          </div>
+        </section>
       </main>
+
+      <a className="floating-whatsapp" href={contact.whatsappUrl} target="_blank" rel="noreferrer" aria-label="Falar no WhatsApp">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M20.2 15.4c-1.4 0-2.7-.2-3.9-.7a1.4 1.4 0 0 0-1.5.3l-1.8 1.8a15.5 15.5 0 0 1-5.8-5.8L9 9.2c.4-.4.5-1 .3-1.5-.4-1.2-.7-2.5-.7-3.9 0-.8-.6-1.4-1.4-1.4H4.3C3.6 2.4 3 3 3 3.8 3 13.3 10.7 21 20.2 21c.8 0 1.4-.6 1.4-1.4v-2.8c0-.8-.6-1.4-1.4-1.4Z" />
+        </svg>
+      </a>
 
       <footer className="site-footer">
         <div className="page-container footer-inner">
-          <div className="footer-brand">
-            <img className="brand-logo" src={logo} alt="Studio 7 Esquadrias" />
-            <div>
-              <strong>Studio 7 Esquadrias</strong>
-              <p>Esquadrias premium para projetos residenciais, corporativos e arquitetônicos.</p>
-            </div>
-          </div>
-
+          <img src={logo} alt="Studio 7 Esquadrias" />
+          <p>Studio 7 Esquadrias. Soluções sob medida para obras que exigem qualidade e precisão.</p>
           <div className="footer-links">
-            <a href="#sobre">Sobre</a>
-            <a href="#aplicacoes">Aplicações</a>
-            <a href="#faq">FAQ</a>
-            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-              WhatsApp
-            </a>
+            <a href="#principal">Principal</a>
+            <a href="#diferenciais">Diferenciais</a>
+            <a href="#contato">Contato</a>
           </div>
         </div>
       </footer>
