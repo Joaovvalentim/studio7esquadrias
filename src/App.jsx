@@ -355,6 +355,31 @@ function App() {
   }, [])
 
   useEffect(() => {
+    const animatedElements = document.querySelectorAll('[data-animate]')
+
+    if (animatedElements.length === 0) return
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            obs.unobserve(entry.target)
+          }
+        })
+      },
+      {
+        threshold: 0.18,
+        rootMargin: '0px 0px -8% 0px',
+      },
+    )
+
+    animatedElements.forEach((element) => observer.observe(element))
+
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? 'hidden' : ''
 
     return () => {
@@ -454,13 +479,13 @@ function App() {
           <div className="hero-scrim"></div>
 
           <div className="page-container hero-content">
-            <p className="section-kicker">Studio 7 Esquadrias</p>
-            <h1>Solução em esquadrias</h1>
-            <p className="hero-text">
+            <p className="section-kicker" data-animate="fade-up">Studio 7 Esquadrias</p>
+            <h1 data-animate="fade-up" data-delay="100">Solução em esquadrias</h1>
+            <p className="hero-text" data-animate="fade-up" data-delay="200">
               Onde seu projeto ganha vida e é executado com respeito, qualidade e preço justo.
             </p>
 
-            <div className="hero-actions">
+            <div className="hero-actions" data-animate="fade-up" data-delay="300">
               <a className="primary-button" href={contact.whatsappUrl} target="_blank" rel="noreferrer">
                 Saiba mais
               </a>
@@ -506,11 +531,16 @@ function App() {
 
         <section className="intro-band" data-section id="diferenciais">
           <div className="page-container">
-            <h2>Diferenciais</h2>
+            <h2 data-animate="fade-up">Diferenciais</h2>
 
             <div className="differentials-grid">
-              {differentiators.map((item) => (
-                <article className="image-card" key={item.title}>
+              {differentiators.map((item, index) => (
+                <article
+                  className="image-card"
+                  key={item.title}
+                  data-animate="fade-up"
+                  data-delay={`${Math.min(100 + index * 100, 400)}`}
+                >
                   <img src={item.image} alt="" />
                   <div>
                     <h3>{item.title}</h3>
@@ -524,7 +554,7 @@ function App() {
               ))}
             </div>
 
-            <div className="center-action">
+            <div className="center-action" data-animate="fade-up" data-delay="200">
               <a className="small-pill" href={contact.whatsappUrl} target="_blank" rel="noreferrer">
                 Saiba mais!
               </a>
@@ -535,11 +565,11 @@ function App() {
         <section className="delivery-section" data-section id="estrutura">
           <div className="page-container structure-layout">
             <div className="structure-heading">
-              <p className="section-kicker">Estrutura</p>
-              <h2>Controle, precisão, personalização e qualidade em cada detalhe.</h2>
+              <p className="section-kicker" data-animate="fade-up">Estrutura</p>
+              <h2 data-animate="fade-up" data-delay="100">Controle, precisão, personalização e qualidade em cada detalhe.</h2>
             </div>
 
-            <div className="structure-carousel" aria-label="Fotos da estrutura da fábrica Studio 7">
+            <div className="structure-carousel" aria-label="Fotos da estrutura da fábrica Studio 7" data-animate="zoom-soft" data-delay="200">
               <div className="structure-viewport" ref={structureViewportRef} onScroll={normalizeStructureCarousel}>
                 <div className="structure-track">
                   {[0, 1].map((setIndex) => (
@@ -608,16 +638,16 @@ function App() {
         <section className="benefits-section" data-section id="beneficios">
           <div className="page-container benefits-panel">
             <div>
-              <p className="section-kicker">Benefícios</p>
-              <h2>Benefícios</h2>
-              <ul className="main-benefits">
+              <p className="section-kicker" data-animate="fade-up">Benefícios</p>
+              <h2 data-animate="fade-up" data-delay="100">Benefícios</h2>
+              <ul className="main-benefits" data-animate="fade-up" data-delay="200">
                 {mainBenefits.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
             </div>
 
-            <div className="benefit-tags">
+            <div className="benefit-tags" data-animate="fade-up" data-delay="300">
               {benefits.map((item) => (
                 <span key={item}>{item}</span>
               ))}
@@ -627,23 +657,27 @@ function App() {
 
         <section className="projects-section" data-section id="projetos">
           <div className="page-container projects-container">
-            <h2>Projetos</h2>
+            <h2 data-animate="fade-up">Projetos</h2>
 
             <div className="projects-layout">
-              <article className="project-photo large">
+              <article className="project-photo large" data-animate="zoom-soft" data-delay="100">
                 <img src={images.projectA} alt="" />
               </article>
-              <article className="project-photo">
+              <article className="project-photo" data-animate="zoom-soft" data-delay="200">
                 <img src={images.projectB} alt="" />
               </article>
-              <article className="project-photo">
+              <article className="project-photo" data-animate="zoom-soft" data-delay="300">
                 <img src={images.projectC} alt="" />
               </article>
             </div>
 
             <div className="line-list">
-              {projectLines.map((item) => (
-                <article key={item.title}>
+              {projectLines.map((item, index) => (
+                <article
+                  key={item.title}
+                  data-animate="fade-up"
+                  data-delay={`${Math.min(100 + index * 100, 500)}`}
+                >
                   <h3>{item.title}</h3>
                   <ul>
                     {item.items.map((line) => (
@@ -660,18 +694,18 @@ function App() {
           <img src={images.partners} alt="" />
           <div className="partners-overlay"></div>
           <div className="page-container partners-content">
-            <p className="section-kicker">Parceiros Serralheiros</p>
-            <h2>Parceiros Serralheiros</h2>
-            <p>
+            <p className="section-kicker" data-animate="fade-up">Parceiros Serralheiros</p>
+            <h2 data-animate="fade-up" data-delay="100">Parceiros Serralheiros</h2>
+            <p data-animate="fade-up" data-delay="200">
               Executamos também a fabricação das obras de sua empresa.
               Terceirização para quem não tem campo fabril ou para sua empresa que está acima da capacidade produtiva.
             </p>
-            <ul className="partners-list">
+            <ul className="partners-list" data-animate="fade-up" data-delay="300">
               {partnerItems.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
-            <a className="primary-button" href={contact.whatsappUrl} target="_blank" rel="noreferrer">
+            <a className="primary-button" href={contact.whatsappUrl} target="_blank" rel="noreferrer" data-animate="fade-up" data-delay="400">
               Falar com a Studio 7
             </a>
           </div>
@@ -680,10 +714,10 @@ function App() {
         <section className="location-section" data-section id="onde-estamos">
           <div className="page-container onde-container">
             <div className="onde-copy">
-              <p className="onde-kicker">Nossa localização</p>
-              <h2 className="onde-title">Venha conhecer nossa estrutura</h2>
+              <p className="onde-kicker" data-animate="fade-up">Nossa localização</p>
+              <h2 className="onde-title" data-animate="fade-up" data-delay="100">Venha conhecer nossa estrutura</h2>
 
-              <div className="endereco-card">
+              <div className="endereco-card" data-animate="fade-up" data-delay="200">
                 <span>Fábrica Studio 7 Esquadrias</span>
                 <p>
                   Av. Anton Von Zuben, 3145 - Jardim São José, Campinas - SP, 13051-145
@@ -695,13 +729,15 @@ function App() {
                 href="https://www.google.com/maps/search/?api=1&query=Av.+Anton+Von+Zuben,+3145,+Jardim+São+José,+Campinas+-+SP,+13051-145"
                 target="_blank"
                 rel="noreferrer"
+                data-animate="fade-up"
+                data-delay="300"
               >
                 Abrir no Google Maps
               </a>
             </div>
 
             <div className="onde-right">
-              <div className="mapa-card" aria-label="Mapa da fábrica Studio 7 em Campinas">
+              <div className="mapa-card" aria-label="Mapa da fábrica Studio 7 em Campinas" data-animate="zoom-soft" data-delay="200">
                 <iframe
                   src="https://www.google.com/maps?q=Av.+Anton+Von+Zuben,+3145,+Jardim+São+José,+Campinas+-+SP,+13051-145&output=embed"
                   loading="lazy"
@@ -709,7 +745,7 @@ function App() {
                 ></iframe>
               </div>
 
-              <figure className="fachada-card">
+              <figure className="fachada-card" data-animate="zoom-soft" data-delay="300">
                 <img
                   src={images.locationFacade}
                   alt="Fachada da fábrica Studio 7 Esquadrias em Campinas"
@@ -722,15 +758,15 @@ function App() {
         <section className="contact-section" data-section id="contato">
           <div className="contato-container">
             <div className="contato-copy">
-              <p className="section-kicker">CONTATO</p>
-              <h2 className="contato-title">Fale com a Studio 7</h2>
-              <p className="contato-text">
+              <p className="section-kicker" data-animate="fade-up">CONTATO</p>
+              <h2 className="contato-title" data-animate="fade-up" data-delay="100">Fale com a Studio 7</h2>
+              <p className="contato-text" data-animate="fade-up" data-delay="200">
                 Tire suas dúvidas, solicite um orçamento ou fale com nossa equipe pelos canais abaixo.
               </p>
             </div>
 
             <div className="contato-cards" aria-label="Canais de contato">
-              <article className="contato-main">
+              <article className="contato-main" data-animate="fade-up" data-delay="200">
                 <span className="contato-main-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24">
                     <path d="M20.2 15.4c-1.4 0-2.7-.2-3.9-.7a1.4 1.4 0 0 0-1.5.3l-1.8 1.8a15.5 15.5 0 0 1-5.8-5.8L9 9.2c.4-.4.5-1 .3-1.5-.4-1.2-.7-2.5-.7-3.9 0-.8-.6-1.4-1.4-1.4H4.3C3.6 2.4 3 3 3 3.8 3 13.3 10.7 21 20.2 21c.8 0 1.4-.6 1.4-1.4v-2.8c0-.8-.6-1.4-1.4-1.4Z" />
@@ -744,7 +780,7 @@ function App() {
               </article>
 
               <div className="contato-secundarios">
-                <article className="contato-secundario">
+                <article className="contato-secundario" data-animate="fade-up" data-delay="300">
                   <div className="contato-secundario-topo">
                     <span className="contato-secundario-icon" aria-hidden="true">
                       <svg viewBox="0 0 24 24">
@@ -756,7 +792,7 @@ function App() {
                   <a href={contact.emailUrl}>Enviar</a>
                 </article>
 
-                <article className="contato-secundario">
+                <article className="contato-secundario" data-animate="fade-up" data-delay="400">
                   <div className="contato-secundario-topo">
                     <span className="contato-secundario-icon" aria-hidden="true">
                       <svg viewBox="0 0 24 24">

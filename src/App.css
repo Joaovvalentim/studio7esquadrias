@@ -2825,3 +2825,57 @@ section {
     font-size: 0.74rem;
   }
 }
+
+[data-animate] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+[data-animate].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-animate="fade-up"] {
+  transform: translateY(28px);
+}
+
+[data-animate="fade-left"] {
+  transform: translateX(32px);
+}
+
+[data-animate="fade-right"] {
+  transform: translateX(-32px);
+}
+
+[data-animate="fade-left"].is-visible,
+[data-animate="fade-right"].is-visible {
+  transform: translateX(0);
+}
+
+[data-animate="zoom-soft"] {
+  transform: scale(0.96);
+}
+
+[data-animate="zoom-soft"].is-visible {
+  transform: scale(1);
+}
+
+[data-delay="100"] { transition-delay: 100ms; }
+[data-delay="200"] { transition-delay: 200ms; }
+[data-delay="300"] { transition-delay: 300ms; }
+[data-delay="400"] { transition-delay: 400ms; }
+[data-delay="500"] { transition-delay: 500ms; }
+[data-delay="600"] { transition-delay: 600ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
