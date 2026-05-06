@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from 'react'
+﻿import { useCallback, useEffect, useRef, useState } from 'react'
 import './App.css'
 
 const logo = '/logo_0.png'
@@ -8,6 +8,8 @@ const contact = {
   whatsappUrl:
     'https://wa.me/5519971021432?text=Ol%C3%A1%2C%20vim%20do%20site%20e%20quero%20falar%20sobre%20um%20projeto%20de%20esquadrias.',
   email: 'contato@studio7esquadrias.com.br',
+  emailUrl: 'mailto:contato@studio7esquadrias.com.br',
+  instagramUrl: 'https://www.instagram.com/studio7esquadrias/',
   location: 'Campinas/SP',
 }
 
@@ -25,6 +27,8 @@ const images = {
   projectB: '/Projetos%20possibilidades/projetos%20possibilidades%201.jpg',
   projectC: '/Projetos%20possibilidades/projetos%20possibilidades2.jpg',
   partners: '/Parceiros%20serralheiros%20possibilidades/parceiros%20serralheiros.jpg',
+  locationOffice: '/onde%20estamos/escritorio.jpeg',
+  locationFacade: '/onde%20estamos/fachada.jpeg',
 }
 
 const navItems = [
@@ -40,10 +44,18 @@ const navItems = [
   { id: 'contato', label: 'Contato' },
 ]
 
-const aboutText = [
-  'Somos uma empresa especializada na fabricação de esquadrias de alumínio sob demanda e personalizadas.',
-  'Aqui você produz suas peças de acordo com seu projeto, tendo total autonomia para comprar seus próprios materiais e apenas utilizar de nossa estrutura de ponta e nossos profissionais capacitados para fazer tudo como sempre sonhou.',
-  'Com mais de 20 anos de experiência, estamos prontos para te auxiliar e garantir uma produção certa e justa, dando possibilidades de fazer suas instalações de maneira independente e administrar o tempo de acordo com suas necessidades.',
+const aboutLead = 'Mais de 20 anos transformando projetos em esquadrias de alumínio sob medida.'
+
+const aboutParagraphs = [
+  <>
+    Empresa especializada na <strong>fabricação de esquadrias de alumínio</strong> sob demanda e personalizadas, produzimos cada peça exatamente como o seu projeto pede.
+  </>,
+  <>
+    Você tem <strong>autonomia total</strong> para escolher seus materiais e contar com nossa <strong>estrutura de ponta</strong> e profissionais capacitados — fazendo tudo como sempre sonhou.
+  </>,
+  <>
+    Garantimos uma produção certa e justa, com a liberdade de administrar instalações e <strong>prazos no seu tempo</strong>.
+  </>,
 ]
 
 const differentiators = [
@@ -219,6 +231,48 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const structureViewportRef = useRef(null)
 
+  const getHeaderHeight = useCallback(() => {
+    const header = document.querySelector('.topbar')
+    const cssHeight = Number.parseFloat(
+      window.getComputedStyle(document.documentElement).getPropertyValue('--header-height'),
+    )
+
+    return Math.ceil(header?.getBoundingClientRect().bottom || cssHeight || 80)
+  }, [])
+
+  const updateHeaderHeight = useCallback(() => {
+    document.documentElement.style.setProperty('--header-height', `${getHeaderHeight()}px`)
+  }, [getHeaderHeight])
+
+  const scrollToSection = useCallback((id, behavior = 'smooth') => {
+    const target = document.getElementById(id)
+
+    if (!target) return
+
+    const headerHeight = getHeaderHeight()
+    const elementPosition = target.getBoundingClientRect().top + window.pageYOffset
+    const offsetPosition = Math.max(0, elementPosition - headerHeight)
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior,
+    })
+
+    if (id === 'projetos') {
+      const logProjectPosition = () => {
+        const top = target.getBoundingClientRect().top
+
+        console.log('Debug #projetos scroll top:', Math.round(top - getHeaderHeight()))
+      }
+
+      if ('onscrollend' in window) {
+        window.addEventListener('scrollend', logProjectPosition, { once: true })
+      } else {
+        window.setTimeout(logProjectPosition, 3500)
+      }
+    }
+  }, [getHeaderHeight])
+
   const moveStructureCarousel = (direction) => {
     const viewport = structureViewportRef.current
 
@@ -269,21 +323,29 @@ function App() {
   }, [])
 
   useEffect(() => {
+    updateHeaderHeight()
+    window.addEventListener('resize', updateHeaderHeight)
+
+    return () => window.removeEventListener('resize', updateHeaderHeight)
+  }, [updateHeaderHeight])
+
+  useEffect(() => {
     const sectionNodes = document.querySelectorAll('[data-section]')
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const visibleEntry = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+        const intersecting = entries.filter((entry) => entry.isIntersecting)
 
-        if (visibleEntry) {
-          setActiveSection(visibleEntry.target.id)
+        if (intersecting.length > 0) {
+          const topmost = intersecting.sort(
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top,
+          )[0]
+          setActiveSection(topmost.target.id)
         }
       },
       {
-        threshold: [0.22, 0.42, 0.62],
-        rootMargin: '-18% 0px -56% 0px',
+        threshold: 0,
+        rootMargin: '-40% 0px -55% 0px',
       },
     )
 
@@ -300,24 +362,60 @@ function App() {
     }
   }, [isMobileMenuOpen])
 
-  const handleContactSubmit = (event) => {
+  useEffect(() => {
+    const handleAnchorClick = (event) => {
+      const anchor = event.target.closest('a[href^="#"]')
+
+      if (!anchor || event.defaultPrevented) return
+
+      const id = anchor.getAttribute('href')?.slice(1)
+
+      if (!id || !document.getElementById(id)) return
+
+      event.preventDefault()
+      setActiveSection(id)
+      setIsMobileMenuOpen(false)
+      document.body.style.overflow = ''
+      window.history.pushState(null, '', `#${id}`)
+
+      window.requestAnimationFrame(() => {
+        scrollToSection(id)
+      })
+    }
+
+    document.addEventListener('click', handleAnchorClick)
+
+    return () => document.removeEventListener('click', handleAnchorClick)
+  }, [scrollToSection])
+
+  useEffect(() => {
+    const id = window.location.hash.slice(1)
+
+    if (!id || !document.getElementById(id)) return
+
+    window.requestAnimationFrame(() => {
+      setActiveSection(id)
+      scrollToSection(id, 'auto')
+    })
+  }, [scrollToSection])
+
+  const handleSectionLinkClick = (event, id) => {
     event.preventDefault()
+    setActiveSection(id)
+    setIsMobileMenuOpen(false)
+    document.body.style.overflow = ''
+    window.history.pushState(null, '', `#${id}`)
 
-    const formData = new FormData(event.currentTarget)
-    const name = formData.get('name') || 'Visitante'
-    const phone = formData.get('phone') || 'não informado'
-    const project = formData.get('project') || 'projeto de esquadrias'
-    const message = `Olá, sou ${name}. Meu WhatsApp é ${phone}. Quero falar sobre: ${project}.`
-
-    window.open(`https://wa.me/5519971021432?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
-    event.currentTarget.reset()
+    window.requestAnimationFrame(() => {
+      scrollToSection(id)
+    })
   }
 
   return (
     <div className="site-shell">
       <header className={`topbar ${isTopbarSolid ? 'is-solid' : ''}`}>
         <div className="topbar-inner">
-          <a className="brand" href="#principal" aria-label="Ir para o início">
+          <a className="brand" href="#principal" aria-label="Ir para o início" onClick={(event) => handleSectionLinkClick(event, 'principal')}>
             <img className="brand-logo" src={logo} alt="Studio 7 Esquadrias" />
           </a>
 
@@ -340,7 +438,7 @@ function App() {
                 className={activeSection === item.id ? 'is-active' : ''}
                 href={`#${item.id}`}
                 key={item.id}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(event) => handleSectionLinkClick(event, item.id)}
               >
                 {item.label}
               </a>
@@ -373,28 +471,36 @@ function App() {
           </div>
         </section>
 
-        <section className="about-section" data-section id="quem-somos">
-          <div className="page-container split-section">
-            <div>
-              <p className="section-kicker">Quem somos</p>
-              <h2>Quem somos</h2>
+        <section className={`about-section ${activeSection === 'quem-somos' ? 'is-visible' : ''}`} data-section id="quem-somos">
+          <div className="about-glow" aria-hidden="true"></div>
+          <div className="page-container about-grid">
+            <div className="about-visual">
+              <div className="about-media">
+                <div className="about-image-wrap">
+                  <img src={images.factory} alt="Estrutura da fábrica Studio 7 Esquadrias" />
+                </div>
+                <div className="about-image-glow" aria-hidden="true"></div>
+                <div className="about-badge">
+                  <span className="about-badge-number">
+                    20<small>+</small>
+                  </span>
+                  <span className="about-badge-text">anos de experiência no mercado</span>
+                </div>
+              </div>
+              <div className="about-heading">
+                <p className="section-kicker">Quem somos</p>
+                <h2>Quem somos</h2>
+              </div>
             </div>
 
-            <div className="text-stack">
-              {aboutText.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
+            <div className="about-content">
+              <p className="about-lead">{aboutLead}</p>
+              <div className="about-paragraphs">
+                {aboutParagraphs.map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-
-        <section className="sponsored-section">
-          <div className="page-container sponsored-panel">
-            <h2>Cansado de correr atrás de uma empresa séria para realizar o sonho de suas esquadrias?</h2>
-            <p>
-              A Studio 7 tem a solução para sua obra se transformar no sonho que tanto idealizou.
-              Aqui você encontra qualidade, preço justo e garantia de entrega.
-            </p>
           </div>
         </section>
 
@@ -520,7 +626,7 @@ function App() {
         </section>
 
         <section className="projects-section" data-section id="projetos">
-          <div className="page-container">
+          <div className="page-container projects-container">
             <h2>Projetos</h2>
 
             <div className="projects-layout">
@@ -572,44 +678,97 @@ function App() {
         </section>
 
         <section className="location-section" data-section id="onde-estamos">
-          <div className="page-container split-section">
-            <div>
-              <p className="section-kicker">Onde estamos</p>
-              <h2>Onde estamos</h2>
+          <div className="page-container onde-container">
+            <div className="onde-copy">
+              <p className="onde-kicker">Nossa localização</p>
+              <h2 className="onde-title">Venha conhecer nossa estrutura</h2>
+
+              <div className="endereco-card">
+                <span>Fábrica Studio 7 Esquadrias</span>
+                <p>
+                  Av. Anton Von Zuben, 3145 - Jardim São José, Campinas - SP, 13051-145
+                </p>
+              </div>
+
+              <a
+                className="maps-button"
+                href="https://www.google.com/maps/search/?api=1&query=Av.+Anton+Von+Zuben,+3145,+Jardim+São+José,+Campinas+-+SP,+13051-145"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Abrir no Google Maps
+              </a>
             </div>
 
-            <div className="contact-strip">
-              <a href={contact.whatsappUrl} target="_blank" rel="noreferrer">
-                {contact.whatsappLabel}
-              </a>
-              <a href={`mailto:${contact.email}`}>{contact.email}</a>
-              <span>{contact.location}</span>
+            <div className="onde-proof">
+              <figure className="fachada-card">
+                <img
+                  src={images.locationFacade}
+                  alt="Fachada da fábrica Studio 7 Esquadrias em Campinas"
+                />
+              </figure>
+
+              <div className="mapa-card" aria-label="Mapa da fábrica Studio 7 em Campinas">
+                <iframe
+                  src="https://www.google.com/maps?q=Av.+Anton+Von+Zuben,+3145,+Jardim+São+José,+Campinas+-+SP,+13051-145&output=embed"
+                  loading="lazy"
+                  title="Localização da Studio 7 Esquadrias"
+                ></iframe>
+              </div>
             </div>
           </div>
         </section>
 
         <section className="contact-section" data-section id="contato">
-          <div className="page-container contact-layout">
-            <div>
-              <p className="section-kicker">Contato</p>
-              <h2>Contato</h2>
+          <div className="contato-container">
+            <div className="contato-copy">
+              <p className="section-kicker">CONTATO</p>
+              <h2 className="contato-title">Fale com a Studio 7</h2>
+              <p className="contato-text">
+                Tire suas dúvidas, solicite um orçamento ou fale com nossa equipe pelos canais abaixo.
+              </p>
             </div>
 
-            <form className="contact-form" onSubmit={handleContactSubmit}>
-              <label>
-                Nome
-                <input name="name" placeholder="Seu nome" required />
-              </label>
-              <label>
-                WhatsApp
-                <input name="phone" placeholder="Seu telefone" required />
-              </label>
-              <label>
-                Projeto
-                <textarea name="project" placeholder="Conte rapidamente o que você precisa" rows="4"></textarea>
-              </label>
-              <button type="submit">Enviar pelo WhatsApp</button>
-            </form>
+            <div className="contato-cards" aria-label="Canais de contato">
+              <article className="contato-main">
+                <span className="contato-main-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M20.2 15.4c-1.4 0-2.7-.2-3.9-.7a1.4 1.4 0 0 0-1.5.3l-1.8 1.8a15.5 15.5 0 0 1-5.8-5.8L9 9.2c.4-.4.5-1 .3-1.5-.4-1.2-.7-2.5-.7-3.9 0-.8-.6-1.4-1.4-1.4H4.3C3.6 2.4 3 3 3 3.8 3 13.3 10.7 21 20.2 21c.8 0 1.4-.6 1.4-1.4v-2.8c0-.8-.6-1.4-1.4-1.4Z" />
+                  </svg>
+                </span>
+                <h3>WhatsApp</h3>
+                <p>Atendimento rápido para orçamentos e dúvidas.</p>
+                <a className="contato-cta" href={contact.whatsappUrl} target="_blank" rel="noreferrer">
+                  Chamar no WhatsApp
+                </a>
+              </article>
+
+              <div className="contato-secundarios">
+                <article className="contato-secundario">
+                  <div className="contato-secundario-topo">
+                    <span className="contato-secundario-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M4.8 5h14.4c1 0 1.8.8 1.8 1.8v10.4c0 1-.8 1.8-1.8 1.8H4.8c-1 0-1.8-.8-1.8-1.8V6.8C3 5.8 3.8 5 4.8 5Zm7.2 7.2 7-4.7H5l7 4.7Zm0 2.2L5 9.7v7.1h14V9.7l-7 4.7Z" />
+                      </svg>
+                    </span>
+                    <h3>E-mail</h3>
+                  </div>
+                  <a href={contact.emailUrl}>Enviar</a>
+                </article>
+
+                <article className="contato-secundario">
+                  <div className="contato-secundario-topo">
+                    <span className="contato-secundario-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Zm0 2.2A2.8 2.8 0 0 0 5.2 8v8A2.8 2.8 0 0 0 8 18.8h8a2.8 2.8 0 0 0 2.8-2.8V8A2.8 2.8 0 0 0 16 5.2H8Zm4 3.2a3.6 3.6 0 1 1 0 7.2 3.6 3.6 0 0 1 0-7.2Zm0 2.1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm4.2-2.8a1 1 0 1 1 0 2.1 1 1 0 0 1 0-2.1Z" />
+                      </svg>
+                    </span>
+                    <h3>Instagram</h3>
+                  </div>
+                  <a href={contact.instagramUrl} target="_blank" rel="noreferrer">Acompanhar</a>
+                </article>
+              </div>
+            </div>
           </div>
         </section>
       </main>
@@ -621,15 +780,48 @@ function App() {
       </a>
 
       <footer className="site-footer">
-        <div className="page-container footer-inner">
-          <img src={logo} alt="Studio 7 Esquadrias" />
-          <p>Studio 7 Esquadrias. Solução em esquadrias.</p>
-          <div className="footer-links">
-            <a href="#principal">Principal</a>
-            <a href="#quem-somos">Quem somos</a>
-            <a href="#diferenciais">Diferenciais</a>
-            <a href="#contato">Contato</a>
+        <div className="page-container footer-container">
+          <div className="footer-col footer-brand">
+            <img className="footer-logo" src={logo} alt="Studio 7 Esquadrias" />
+            <p>Studio 7 Esquadrias. Solução em esquadrias.</p>
           </div>
+
+          <div className="footer-col">
+            <h4 className="footer-title">Contato</h4>
+            <ul className="footer-list">
+              <li>
+                <a href={contact.whatsappUrl} target="_blank" rel="noreferrer">
+                  WhatsApp · {contact.whatsappLabel}
+                </a>
+              </li>
+              <li>
+                <a href={contact.emailUrl}>{contact.email}</a>
+              </li>
+              <li>{contact.location}</li>
+            </ul>
+            <div className="footer-social">
+              <a href={contact.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram da Studio 7 Esquadrias">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Zm0 2.2A2.8 2.8 0 0 0 5.2 8v8A2.8 2.8 0 0 0 8 18.8h8a2.8 2.8 0 0 0 2.8-2.8V8A2.8 2.8 0 0 0 16 5.2H8Zm4 3.2a3.6 3.6 0 1 1 0 7.2 3.6 3.6 0 0 1 0-7.2Zm0 2.1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm4.2-2.8a1 1 0 1 1 0 2.1 1 1 0 0 1 0-2.1Z" />
+                </svg>
+                <span>@studio7esquadrias</span>
+              </a>
+            </div>
+          </div>
+
+          <div className="footer-col">
+            <h4 className="footer-title">Navegação</h4>
+            <ul className="footer-list">
+              <li><a href="#principal">Principal</a></li>
+              <li><a href="#projetos">Projetos</a></li>
+              <li><a href="#beneficios">Benefícios</a></li>
+              <li><a href="#contato">Contato</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="page-container footer-bottom">
+          <p>© 2026 Studio 7 Esquadrias. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>
