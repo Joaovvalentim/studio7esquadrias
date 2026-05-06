@@ -89,52 +89,53 @@ main,
   justify-content: space-between;
   gap: 0.75rem;
   width: min(1560px, calc(100% - clamp(16px, 2vw, 32px)));
-  min-height: 4.4rem;
+  min-height: 2.8rem;
   margin: 0 auto;
-  padding: 0.62rem clamp(0.8rem, 1.2vw, 1.15rem);
+  padding: 0.25rem clamp(0.8rem, 1.2vw, 1.15rem);
 }
 
 .brand {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
   flex: 0 0 auto;
+  width: clamp(4.6rem, 5.6vw, 5.4rem);
+  height: 100%;
   color: var(--text-strong);
   text-decoration: none;
 }
 
 .brand-logo {
-  width: 4.25rem;
-  height: 4.25rem;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: auto;
+  height: clamp(13rem, 7.6vw, 7.6rem);
+  max-height: none;
   object-fit: contain;
+  transform: translateY(-50%);
   filter:
-    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.18))
-    drop-shadow(0 0 24px rgba(145, 206, 244, 0.24));
-}
-
-.brand-copy {
-  display: grid;
-  gap: 0.12rem;
-}
-
-.brand-copy strong {
-  font-size: 1rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.brand-copy span {
-  color: #d2dfef;
-  font-size: 0.78rem;
+    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.24))
+    drop-shadow(0 0 24px rgba(145, 206, 244, 0.22));
 }
 
 .nav-pill {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.12rem;
+  gap: 0.3rem;
   margin-left: auto;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  padding: 5px;
+}
+
+.nav-pill::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-pill a {
@@ -142,11 +143,12 @@ main,
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
   min-height: 2.45rem;
-  padding: 0 0.64rem;
+  padding: 0 clamp(0.4rem, 0.6vw, 0.7rem);
   border-radius: 999px;
   color: rgba(232, 239, 248, 0.8);
-  font-size: 0.78rem;
+  font-size: clamp(0.72rem, 0.82vw, 0.82rem);
   font-weight: 700;
   line-height: 1;
   text-decoration: none;
@@ -1554,18 +1556,18 @@ section {
   }
 
   .topbar-inner {
-    min-height: 4rem;
+    min-height: 2.6rem;
     gap: 0.5rem;
-    padding: 0.48rem 0.62rem;
+    padding: 0.2rem 0.55rem;
+  }
+
+  .brand {
+    width: 4rem;
   }
 
   .brand-logo {
-    width: 3.35rem;
-    height: 3.35rem;
-  }
-
-  .brand-copy {
-    display: none;
+    width: auto;
+    height: 6.4rem;
   }
 
   .hero-section,

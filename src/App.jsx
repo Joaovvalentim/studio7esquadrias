@@ -1,6 +1,7 @@
 ﻿import { useEffect, useRef, useState } from 'react'
-import logo from './assets/logo1.png'
 import './App.css'
+
+const logo = '/logo_0.png'
 
 const contact = {
   whatsappLabel: '+55 19 97102-1432',
@@ -318,10 +319,6 @@ function App() {
         <div className="topbar-inner">
           <a className="brand" href="#principal" aria-label="Ir para o início">
             <img className="brand-logo" src={logo} alt="Studio 7 Esquadrias" />
-            <div className="brand-copy">
-              <strong>Studio 7</strong>
-              <span>Solução em esquadrias</span>
-            </div>
           </a>
 
           <button
