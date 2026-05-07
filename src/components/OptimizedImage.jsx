@@ -39,16 +39,15 @@ const OptimizedImage = memo(function OptimizedImage({
   ...rest
 }) {
   const imgRef = useRef(null)
-  const [shouldLoad, setShouldLoad] = useState(priority)
+  const [shouldLoad, setShouldLoad] = useState(
+    () => priority || typeof IntersectionObserver === 'undefined',
+  )
+  const [responsiveFailed, setResponsiveFailed] = useState(false)
 
   useEffect(() => {
     if (priority || shouldLoad) return
     const node = imgRef.current
     if (!node) return
-    if (typeof IntersectionObserver === 'undefined') {
-      setShouldLoad(true)
-      return
-    }
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -66,8 +65,17 @@ const OptimizedImage = memo(function OptimizedImage({
 
   const { base, ext, tail } = splitSrc(src)
   const useResponsive = responsive && SUPPORTED_RESPONSIVE_EXT.includes(ext.toLowerCase())
-  const showSources = shouldLoad && useResponsive
+  const showSources = shouldLoad && useResponsive && !responsiveFailed
   const placeholder = placeholderSrc(width, height)
+
+  const handleError = (event) => {
+    if (showSources) {
+      setResponsiveFailed(true)
+      return
+    }
+
+    event.currentTarget.src = placeholder
+  }
 
   return (
     <picture>
@@ -85,10 +93,11 @@ const OptimizedImage = memo(function OptimizedImage({
         height={height}
         loading={priority ? 'eager' : 'lazy'}
         decoding="async"
-        fetchpriority={priority ? 'high' : 'auto'}
+        fetchPriority={priority ? 'high' : 'auto'}
         className={className}
         draggable={draggable}
         onLoad={onLoad}
+        onError={handleError}
         {...rest}
       />
     </picture>
