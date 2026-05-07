@@ -4,6 +4,11 @@ import OptimizedImage from './components/OptimizedImage'
 import { usePreloadImages } from './hooks/usePreloadImages'
 
 const logo = '/logo_0.png'
+const campaignLogo = '/logo-campaign.png'
+const campaignPath = '/campanha-esquadrias'
+const mainSitePath = '/'
+const campaignWhatsappMessage =
+  'Olá! Vim através da página de campanha da Studio 7 e gostaria de solicitar um atendimento.'
 
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
@@ -41,6 +46,7 @@ const contact = {
   whatsappLabel: '+55 19 97402-7431',
   whatsappUrl:
     'https://wa.me/5519974027431?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Studio%207%20e%20gostaria%20de%20um%20or%C3%A7amento.',
+  campaignWhatsappUrl: `https://wa.me/5519974027431?text=${encodeURIComponent(campaignWhatsappMessage)}`,
   email: 'contato@studio7esquadrias.com.br',
   emailUrl: 'mailto:contato@studio7esquadrias.com.br',
   instagramHandle: '@studio7_esquadrias',
@@ -63,6 +69,7 @@ const images = {
   projectC: '/Projetos%20possibilidades/projetos%20possibilidades2.jpg',
   partners: '/Parceiros%20serralheiros%20possibilidades/parceiros%20serralheiros.jpg',
   locationFacade: '/onde%20estamos/fachada.jpeg',
+  campaign: '/Pagina%20patrocinada%20possibilidades/happy-father-with-daughter-standing-near-open-balcony-smiling.jpg',
 }
 
 const navItems = [
@@ -326,7 +333,141 @@ const DeferredMap = memo(function DeferredMap() {
   )
 })
 
-function App() {
+function usePageMetadata({ title, description, path }) {
+  useEffect(() => {
+    document.title = title
+
+    let descriptionMeta = document.querySelector('meta[name="description"]')
+    if (!descriptionMeta) {
+      descriptionMeta = document.createElement('meta')
+      descriptionMeta.setAttribute('name', 'description')
+      document.head.appendChild(descriptionMeta)
+    }
+    descriptionMeta.setAttribute('content', description)
+
+    let canonical = document.querySelector('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', `${window.location.origin}${path}`)
+  }, [description, path, title])
+}
+
+function SiteFooter({ navigationPrefix = '#', className = '' } = {}) {
+  const footerLinks = [
+    { href: `${navigationPrefix}principal`, label: 'Principal' },
+    { href: `${navigationPrefix}projetos`, label: 'Projetos' },
+    { href: `${navigationPrefix}beneficios`, label: 'Benefícios' },
+    { href: `${navigationPrefix}contato`, label: 'Contato' },
+  ]
+
+  return (
+    <footer className={`site-footer ${className}`.trim()}>
+      <div className="page-container footer-container">
+        <div className="footer-col footer-brand">
+          <img className="footer-logo" src={logo} alt="Studio 7 Esquadrias" width="64" height="64" loading="lazy" decoding="async" />
+          <p>Studio 7 Esquadrias. Solução em esquadrias.</p>
+        </div>
+
+        <div className="footer-col">
+          <h4 className="footer-title">Contato</h4>
+          <ul className="footer-list">
+            <li>
+              <a href={contact.whatsappUrl} target="_blank" rel="noreferrer">
+                WhatsApp · {contact.whatsappLabel}
+              </a>
+            </li>
+            <li>
+              <a href={contact.emailUrl}>{contact.email}</a>
+            </li>
+            <li>{contact.location}</li>
+          </ul>
+          <div className="footer-social">
+            <a href={contact.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram da Studio 7 Esquadrias">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Zm0 2.2A2.8 2.8 0 0 0 5.2 8v8A2.8 2.8 0 0 0 8 18.8h8a2.8 2.8 0 0 0 2.8-2.8V8A2.8 2.8 0 0 0 16 5.2H8Zm4 3.2a3.6 3.6 0 1 1 0 7.2 3.6 3.6 0 0 1 0-7.2Zm0 2.1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm4.2-2.8a1 1 0 1 1 0 2.1 1 1 0 0 1 0-2.1Z" />
+              </svg>
+              <span>{contact.instagramHandle}</span>
+            </a>
+          </div>
+        </div>
+
+        <div className="footer-col">
+          <h4 className="footer-title">Navegação</h4>
+          <ul className="footer-list">
+            {footerLinks.map((link) => (
+              <li key={link.label}>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="page-container footer-bottom">
+        <p>© 2026 Studio 7 Esquadrias. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+  )
+}
+
+function CampaignLandingPage() {
+  usePageMetadata({
+    title: 'Studio 7 Esquadrias | Campanha',
+    description:
+      'Atendimento direto da Studio 7 para esquadrias sob medida com qualidade, preço justo e garantia de entrega.',
+    path: campaignPath,
+  })
+
+  return (
+    <div className="campaign-page">
+      <div className="campaign-screen">
+        <header className="campaign-header">
+          <a href={mainSitePath} aria-label="Ir para o site principal da Studio 7">
+            <img
+              className="campaign-header-logo"
+              src={campaignLogo}
+              alt="Studio 7 Esquadrias"
+              width="320"
+              height="139"
+              decoding="async"
+              fetchPriority="high"
+            />
+          </a>
+        </header>
+
+        <main className="campaign-main">
+          <section className="campaign-hero" aria-labelledby="campaign-title">
+            <div className="page-container campaign-hero-content">
+              <p className="section-kicker">Studio 7 Esquadrias</p>
+              <h1 id="campaign-title">
+                Cansado de correr atrás de uma empresa séria para realizar o sonho de suas esquadrias?
+              </h1>
+              <p className="campaign-subtitle">
+                A Studio 7 tem a solução para sua obra se transformar no sonho que tanto idealizou. Aqui você encontra qualidade, preço justo e garantia de entrega.
+              </p>
+
+              <div className="campaign-actions">
+                <a className="primary-button campaign-primary" href={contact.campaignWhatsappUrl} target="_blank" rel="noreferrer">
+                  Falar no WhatsApp
+                </a>
+                <a className="ghost-button campaign-secondary" href={mainSitePath}>
+                  Visitar site principal
+                </a>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <SiteFooter className="campaign-footer" navigationPrefix="/#" />
+    </div>
+  )
+}
+
+function HomePage() {
   const [isTopbarSolid, setIsTopbarSolid] = useState(false)
   const [activeSection, setActiveSection] = useState(navItems[0].id)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -1026,53 +1167,20 @@ function App() {
         </svg>
       </a>
 
-      <footer className="site-footer">
-        <div className="page-container footer-container">
-          <div className="footer-col footer-brand">
-            <img className="footer-logo" src={logo} alt="Studio 7 Esquadrias" width="64" height="64" loading="lazy" decoding="async" />
-            <p>Studio 7 Esquadrias. Solução em esquadrias.</p>
-          </div>
-
-          <div className="footer-col">
-            <h4 className="footer-title">Contato</h4>
-            <ul className="footer-list">
-              <li>
-                <a href={contact.whatsappUrl} target="_blank" rel="noreferrer">
-                  WhatsApp · {contact.whatsappLabel}
-                </a>
-              </li>
-              <li>
-                <a href={contact.emailUrl}>{contact.email}</a>
-              </li>
-              <li>{contact.location}</li>
-            </ul>
-            <div className="footer-social">
-              <a href={contact.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram da Studio 7 Esquadrias">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Zm0 2.2A2.8 2.8 0 0 0 5.2 8v8A2.8 2.8 0 0 0 8 18.8h8a2.8 2.8 0 0 0 2.8-2.8V8A2.8 2.8 0 0 0 16 5.2H8Zm4 3.2a3.6 3.6 0 1 1 0 7.2 3.6 3.6 0 0 1 0-7.2Zm0 2.1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm4.2-2.8a1 1 0 1 1 0 2.1 1 1 0 0 1 0-2.1Z" />
-                </svg>
-                <span>{contact.instagramHandle}</span>
-              </a>
-            </div>
-          </div>
-
-          <div className="footer-col">
-            <h4 className="footer-title">Navegação</h4>
-            <ul className="footer-list">
-              <li><a href="#principal">Principal</a></li>
-              <li><a href="#projetos">Projetos</a></li>
-              <li><a href="#beneficios">Benefícios</a></li>
-              <li><a href="#contato">Contato</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="page-container footer-bottom">
-          <p>© 2026 Studio 7 Esquadrias. Todos os direitos reservados.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
+}
+
+function App() {
+  const normalizedPath =
+    typeof window === 'undefined' ? '' : window.location.pathname.replace(/\/$/, '')
+
+  if (normalizedPath === campaignPath) {
+    return <CampaignLandingPage />
+  }
+
+  return <HomePage />
 }
 
 export default App
