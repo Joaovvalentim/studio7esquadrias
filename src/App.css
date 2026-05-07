@@ -1622,7 +1622,7 @@ section {
   min-height: 560px;
   display: flex;
   align-items: center;
-  margin: 8px;
+  margin: 78px 8px 8px;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -2523,6 +2523,10 @@ section {
   .hero-section,
   .partners-section {
     margin: 6px;
+  }
+
+  .partners-section {
+    margin: 54px 6px 6px;
   }
 
   .hero-section {

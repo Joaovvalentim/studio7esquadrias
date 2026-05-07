@@ -56,6 +56,7 @@ const contact = {
 
 const images = {
   hero: '/Pagina%20principal%20possibilidades/design-house-modern-villa-with-open-plan-living-private-bedroom-wing-large-terrace-with-privacy.jpg',
+  office: '/escritorio.jpeg',
   factory: '/Diferenciais%20possibilidades/fabrica.jpeg',
   showroom: '/Diferenciais%20possibilidades/showroom.jpg',
   support: '/Diferenciais%20possibilidades/atendimento%20personalizado.jpg',
@@ -87,7 +88,7 @@ const navItems = [
 
 const sectionImages = {
   principal: [],
-  'quem-somos': ['/Diferenciais%20possibilidades/fabrica.jpeg'],
+  'quem-somos': ['/escritorio.jpeg'],
   diferenciais: [
     '/Diferenciais%20possibilidades/fabrica.jpeg',
     '/Diferenciais%20possibilidades/showroom.jpg',
@@ -811,8 +812,8 @@ function HomePage() {
               <div className="about-media">
                 <div className="about-image-wrap">
                   <OptimizedImage
-                    src={images.factory}
-                    alt="Estrutura da fábrica Studio 7 Esquadrias"
+                    src={images.office}
+                    alt="Escritório da Studio 7 Esquadrias"
                     width="1280"
                     height="853"
                     sizes="(min-width: 900px) 50vw, 100vw"
