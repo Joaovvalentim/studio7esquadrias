@@ -334,27 +334,6 @@ const DeferredMap = memo(function DeferredMap() {
   )
 })
 
-function usePageMetadata({ title, description, path }) {
-  useEffect(() => {
-    document.title = title
-
-    let descriptionMeta = document.querySelector('meta[name="description"]')
-    if (!descriptionMeta) {
-      descriptionMeta = document.createElement('meta')
-      descriptionMeta.setAttribute('name', 'description')
-      document.head.appendChild(descriptionMeta)
-    }
-    descriptionMeta.setAttribute('content', description)
-
-    let canonical = document.querySelector('link[rel="canonical"]')
-    if (!canonical) {
-      canonical = document.createElement('link')
-      canonical.setAttribute('rel', 'canonical')
-      document.head.appendChild(canonical)
-    }
-    canonical.setAttribute('href', `${window.location.origin}${path}`)
-  }, [description, path, title])
-}
 
 function SiteFooter({ navigationPrefix = '#', className = '' } = {}) {
   const footerLinks = [
@@ -415,13 +394,6 @@ function SiteFooter({ navigationPrefix = '#', className = '' } = {}) {
 }
 
 function CampaignLandingPage() {
-  usePageMetadata({
-    title: 'Studio 7 Esquadrias | Campanha',
-    description:
-      'Atendimento direto da Studio 7 para esquadrias sob medida com qualidade, preço justo e garantia de entrega.',
-    path: campaignPath,
-  })
-
   return (
     <div className="campaign-page">
       <div className="campaign-screen">
