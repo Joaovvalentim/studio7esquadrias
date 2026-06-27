@@ -19,11 +19,6 @@
     />
     <link rel="canonical" href="https://studio7esquadrias.com.br/" />
 
-    <!-- Agentic Browsing: auto-discovery -->
-    <link rel="alternate" type="application/json" title="Agent Action Map" href="/agents.json" />
-    <link rel="alternate" type="text/plain" title="LLM Context" href="/llms.txt" />
-    <link rel="alternate" type="text/markdown" title="Agent Runbook" href="/agent-instructions.md" />
-
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://studio7esquadrias.com.br/" />
@@ -122,18 +117,18 @@
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;900&display=optional"
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;900&display=optional"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;900&display=optional"
       />
     </noscript>
 
@@ -141,15 +136,24 @@
       rel="preload"
       as="image"
       type="image/avif"
-      imagesrcset="
-        /Pagina%20principal%20possibilidades/design-house-modern-villa-with-open-plan-living-private-bedroom-wing-large-terrace-with-privacy-480w.avif 480w,
-        /Pagina%20principal%20possibilidades/design-house-modern-villa-with-open-plan-living-private-bedroom-wing-large-terrace-with-privacy-1024w.avif 1024w,
-        /Pagina%20principal%20possibilidades/design-house-modern-villa-with-open-plan-living-private-bedroom-wing-large-terrace-with-privacy-1920w.avif 1920w"
-      imagesizes="100vw"
+      href="/Pagina principal possibilidades/design-house-modern-villa-with-open-plan-living-private-bedroom-wing-large-terrace-with-privacy-480w.avif"
       fetchpriority="high"
+      media="(max-width: 768px)"
     />
-    <link rel="preload" as="image" href="/logo_0.png" fetchpriority="high" />
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      href="/Pagina principal possibilidades/design-house-modern-villa-with-open-plan-living-private-bedroom-wing-large-terrace-with-privacy-1024w.avif"
+      fetchpriority="high"
+      media="(min-width: 769px)"
+    />
     <link rel="dns-prefetch" href="https://www.google.com" />
+
+    <!-- Agentic Browsing: auto-discovery (non-blocking) -->
+    <link rel="alternate" type="application/json" title="Agent Action Map" href="/agents.json" />
+    <link rel="alternate" type="text/plain" title="LLM Context" href="/llms.txt" />
+    <link rel="alternate" type="text/markdown" title="Agent Runbook" href="/agent-instructions.md" />
   </head>
   <body>
     <div id="root"></div>

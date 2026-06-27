@@ -67,6 +67,12 @@ const OptimizedImage = memo(function OptimizedImage({
   const useResponsive = responsive && SUPPORTED_RESPONSIVE_EXT.includes(ext.toLowerCase())
   const showSources = shouldLoad && useResponsive && !responsiveFailed
   const placeholder = placeholderSrc(width, height)
+  const resolvedSrc =
+    shouldLoad && priority && useResponsive
+      ? `${base}-480w.avif${tail}`
+      : shouldLoad
+        ? src
+        : placeholder
 
   const handleError = (event) => {
     if (showSources) {
@@ -87,7 +93,7 @@ const OptimizedImage = memo(function OptimizedImage({
       )}
       <img
         ref={imgRef}
-        src={shouldLoad ? src : placeholder}
+        src={resolvedSrc}
         alt={alt}
         width={width}
         height={height}

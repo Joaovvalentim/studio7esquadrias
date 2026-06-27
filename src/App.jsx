@@ -1,7 +1,6 @@
-﻿import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+﻿import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import './App.css'
 import OptimizedImage from './components/OptimizedImage'
-import { usePreloadImages } from './hooks/usePreloadImages'
 
 const logo = '/logo_0.png'
 const campaignLogo = '/logo-campaign.png'
@@ -85,33 +84,6 @@ const navItems = [
   { id: 'onde-estamos', label: 'Onde estamos' },
   { id: 'contato', label: 'Contato' },
 ]
-
-const sectionImages = {
-  principal: [],
-  'quem-somos': ['/escritorio.jpeg'],
-  diferenciais: [
-    '/Diferenciais%20possibilidades/fabrica.jpeg',
-    '/Diferenciais%20possibilidades/showroom.jpg',
-    '/Diferenciais%20possibilidades/atendimento%20personalizado.jpg',
-    '/Diferenciais%20possibilidades/instala%20com%20indicacao.png',
-  ],
-  estrutura: [
-    '/Estrutura%20possibilidades/estrutura%20carrousel1.jpeg',
-    '/Estrutura%20possibilidades/estrutura%20carrousel2.jpg',
-    '/Estrutura%20possibilidades/estrutura%20carrousel3.jpg',
-    '/Estrutura%20possibilidades/estrutura%20carrousel4.jpg',
-  ],
-  funciona: [],
-  beneficios: [],
-  projetos: [
-    '/Projetos%20possibilidades/Projetos.jpg',
-    '/Projetos%20possibilidades/projetos%20possibilidades%201.jpg',
-    '/Projetos%20possibilidades/projetos%20possibilidades2.jpg',
-  ],
-  serralheiros: ['/Parceiros%20serralheiros%20possibilidades/parceiros%20serralheiros.jpg'],
-  'onde-estamos': ['/onde%20estamos/fachada.jpeg'],
-  contato: [],
-}
 
 const aboutLead = 'Mais de 20 anos transformando projetos em esquadrias de alumínio sob medida.'
 
@@ -406,7 +378,7 @@ function CampaignLandingPage() {
               width="320"
               height="139"
               decoding="async"
-              fetchPriority="high"
+              loading="eager"
             />
           </a>
         </header>
@@ -447,16 +419,6 @@ function HomePage() {
   const structureViewportRef = useRef(null)
   const [aboutRef, isAboutVisible] = useAnimateOnce()
   const [processRef, isProcessVisible] = useAnimateOnce()
-
-  const upcomingImages = useMemo(() => {
-    const currentIndex = navItems.findIndex((item) => item.id === activeSection)
-    if (currentIndex === -1) return []
-    const next1 = navItems[currentIndex + 1]?.id
-    const next2 = navItems[currentIndex + 2]?.id
-    return [...(sectionImages[next1] || []), ...(sectionImages[next2] || [])]
-  }, [activeSection])
-
-  usePreloadImages(upcomingImages)
 
   const getHeaderHeight = useCallback(() => {
     const header = document.querySelector('.topbar')
@@ -713,7 +675,8 @@ function HomePage() {
               width="152"
               height="152"
               decoding="async"
-              fetchPriority="high"
+              loading="eager"
+              fetchPriority="low"
             />
           </a>
 
