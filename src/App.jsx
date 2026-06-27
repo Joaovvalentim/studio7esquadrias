@@ -863,7 +863,7 @@ function HomePage() {
               <h2 data-animate="fade-up" data-delay="100">Controle, precisão, personalização e qualidade em cada detalhe.</h2>
             </div>
 
-            <div className="structure-carousel" aria-label="Fotos da estrutura da fábrica Studio 7" data-animate="zoom-soft" data-delay="200">
+            <div className="structure-carousel" role="region" aria-label="Fotos da estrutura da fábrica Studio 7" data-animate="zoom-soft" data-delay="200">
               <div className="structure-viewport" ref={structureViewportRef} onScroll={normalizeStructureCarousel}>
                 <div className="structure-track">
                   {[0, 1].map((setIndex) => (
@@ -913,7 +913,7 @@ function HomePage() {
             <p className="section-kicker">Como funciona</p>
             <h2>Somos a ferramenta que você procura para acertar o caminho e receber em mãos o diferencial que tanto almeja.</h2>
 
-            <div className="process-map" aria-label="Jornada do cliente Studio 7">
+            <div className="process-map" role="region" aria-label="Jornada do cliente Studio 7">
               {processJourney.map((step, index) => (
                 <article className="process-step" key={step.title} style={{ '--step-index': index }}>
                   <div className="process-node" aria-hidden="true">
@@ -1063,7 +1063,7 @@ function HomePage() {
             </div>
 
             <div className="onde-right">
-              <div className="mapa-card" aria-label="Mapa da fábrica Studio 7 em Campinas" data-animate="zoom-soft" data-delay="200">
+              <div className="mapa-card" role="region" aria-label="Mapa da fábrica Studio 7 em Campinas" data-animate="zoom-soft" data-delay="200">
                 <DeferredMap />
               </div>
 
@@ -1090,7 +1090,7 @@ function HomePage() {
               </p>
             </div>
 
-            <div className="contato-cards" aria-label="Canais de contato" data-animate="fade-up" data-delay="200">
+            <div className="contato-cards" role="region" aria-label="Canais de contato" data-animate="fade-up" data-delay="200">
               <a className="contato-option contato-option-primary" href={contact.whatsappUrl} target="_blank" rel="noreferrer">
                 <span className="contato-option-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24">

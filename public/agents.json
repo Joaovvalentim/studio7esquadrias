@@ -1,0 +1,88 @@
+{
+  "name": "Studio 7 Esquadrias",
+  "description": "Fábrica de esquadrias de alumínio sob medida em Campinas, SP.",
+  "url": "https://studio7esquadrias.com.br",
+  "actions": [
+    {
+      "name": "request_quote",
+      "description": "Solicitar orçamento de esquadrias de alumínio via WhatsApp",
+      "url": "https://wa.me/5519974027431",
+      "method": "GET",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Mensagem com detalhes do projeto, medidas e tipo de esquadria desejada"
+          }
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "contact_email",
+      "description": "Enviar e-mail para a equipe comercial da Studio 7",
+      "url": "mailto:contato@studio7esquadrias.com.br",
+      "method": "GET",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string",
+            "description": "Assunto do e-mail"
+          },
+          "body": {
+            "type": "string",
+            "description": "Corpo da mensagem com detalhes do pedido ou dúvida"
+          }
+        },
+        "required": ["body"]
+      }
+    },
+    {
+      "name": "view_location",
+      "description": "Abrir a localização da fábrica e showroom no Google Maps",
+      "url": "https://www.google.com/maps/search/?api=1&query=Av.+Anton+Von+Zuben,+3145,+Jardim+São+José,+Campinas+-+SP,+13051-145",
+      "method": "GET",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "browse_product_lines",
+      "description": "Consultar as linhas de esquadrias de alumínio disponíveis",
+      "url": "https://studio7esquadrias.com.br/#projetos",
+      "method": "GET",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "line": {
+            "type": "string",
+            "description": "Linha de interesse",
+            "enum": [
+              "Suprema",
+              "Mega 25",
+              "Linha 30",
+              "Linha Gold",
+              "Mega 32",
+              "Imperial",
+              "Linha 42",
+              "Mega 45",
+              "Perfetta",
+              "Linha Chroma",
+              "Ripados",
+              "ACM",
+              "Muxarabis",
+              "Pergolados",
+              "Pele de vidro",
+              "Infinity"
+            ]
+          }
+        },
+        "required": ["line"]
+      }
+    }
+  ]
+}

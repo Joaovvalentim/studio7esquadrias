@@ -1,0 +1,25 @@
+# Studio 7 Esquadrias
+
+> Fábrica de esquadrias de alumínio sob medida em Campinas, SP. Mais de 20 anos de experiência, showroom exclusivo, atendimento personalizado e produção própria com equipamentos de ponta.
+
+Contato principal: WhatsApp +55 19 97402-7431 · E-mail contato@studio7esquadrias.com.br · Endereço Av. Anton Von Zuben, 3145, Campinas-SP.
+
+## Páginas principais
+
+- [Página inicial](https://studio7esquadrias.com.br/): Apresentação da empresa, diferenciais, linhas de produtos, projetos, localização e contato.
+
+## Seções do site
+
+- [Quem somos](https://studio7esquadrias.com.br/#quem-somos): História e proposta da Studio 7 Esquadrias.
+- [Diferenciais](https://studio7esquadrias.com.br/#diferenciais): Fábrica, showroom, atendimento personalizado e indicação de instaladores.
+- [Estrutura](https://studio7esquadrias.com.br/#estrutura): Fotos da fábrica e capacidade produtiva.
+- [Como funciona](https://studio7esquadrias.com.br/#funciona): Jornada do cliente do contato à entrega.
+- [Benefícios](https://studio7esquadrias.com.br/#beneficios): Vantagens de comprar direto da fábrica.
+- [Projetos e linhas](https://studio7esquadrias.com.br/#projetos): Linhas Suprema, Mega, Gold, Imperial, Chroma, Perfetta e personalizadas.
+- [Parceiros serralheiros](https://studio7esquadrias.com.br/#serralheiros): Terceirização de fabricação para serralheiros.
+- [Onde estamos](https://studio7esquadrias.com.br/#onde-estamos): Endereço da fábrica e showroom em Campinas.
+- [Contato](https://studio7esquadrias.com.br/#contato): WhatsApp, e-mail e Instagram.
+
+## Optional
+
+- [Instagram](https://www.instagram.com/studio7_esquadrias/): Perfil oficial com projetos e novidades.
